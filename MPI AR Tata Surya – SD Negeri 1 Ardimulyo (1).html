@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>MPI AR Tata Surya – SD Negeri 1 Ardimulyo</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d2140; --muted:#5f6590; --sun:#ffc93c; --sun-d:#d99a00; --orange:#ff8a3d;
+  --teal:#1fbfae; --pink:#ff5d8f; --violet:#7b5cff; --blue:#3d8bff; --ok:#1fae63; --bad:#e8474b;
+  --card:#ffffff; --soft:#f2f3ff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+html{font-size:clamp(16px, calc(0.6vmin + 0.55vmax + 8px), 30px);height:100%}
+body{margin:0;height:100%;overflow:hidden;color:#fff;font-family:'Baloo 2','Nunito','Segoe UI',Roboto,system-ui,sans-serif;line-height:1.35;
+  background:radial-gradient(ellipse at 15% -10%,#32389a 0%,transparent 55%),radial-gradient(ellipse at 100% 110%,#47207a 0%,transparent 50%),linear-gradient(180deg,#0a0f2e,#151b52);
+  -webkit-user-select:none;user-select:none}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.75;
+  background-image:radial-gradient(1.6px 1.6px at 20px 30px,#fff,transparent),radial-gradient(1.2px 1.2px at 140px 80px,#fff,transparent),radial-gradient(1.8px 1.8px at 260px 190px,#ffe9a8,transparent),radial-gradient(1.2px 1.2px at 90px 220px,#cfe0ff,transparent),radial-gradient(1.4px 1.4px at 210px 40px,#fff,transparent),radial-gradient(1px 1px at 300px 120px,#fff,transparent);
+  background-size:320px 260px}
+button{font:inherit;cursor:pointer}
+svg{display:block}
+input,textarea{font:inherit;-webkit-user-select:text;user-select:text}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:3.6rem;display:flex;align-items:center;gap:.6rem;padding:.45rem .7rem;z-index:50;
+  background:linear-gradient(180deg,rgba(9,13,42,.92),rgba(9,13,42,.55) 70%,rgba(9,13,42,0))}
+.topbar h2{flex:1;margin:0;font-size:1.15rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 2px 6px rgba(0,0,0,.4)}
+.ibtn{width:2.9rem;height:2.9rem;flex:0 0 auto;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;padding:0}
+.ibtn svg{width:1.45rem;height:1.45rem}
+.ibtn:active{transform:scale(.92)}
+.ibtn[hidden]{display:none}
+
+/* ---------- buttons ---------- */
+.btn{border:0;border-radius:999px;padding:.55rem 1.5rem;min-height:3rem;font-size:1.05rem;font-weight:800;color:var(--ink);background:var(--sun);
+  box-shadow:0 .28rem 0 var(--sun-d);display:inline-flex;align-items:center;justify-content:center;gap:.45rem;transition:transform .08s}
+.btn:active{transform:translateY(.22rem);box-shadow:0 .06rem 0 var(--sun-d)}
+.btn svg{width:1.3rem;height:1.3rem}
+.btn.big{font-size:1.35rem;padding:.7rem 2.6rem;min-height:3.6rem}
+.btn.sm{font-size:.9rem;min-height:2.5rem;padding:.35rem 1rem}
+.btn.teal{background:var(--teal);color:#fff;box-shadow:0 .28rem 0 #12897c}
+.btn.violet{background:var(--violet);color:#fff;box-shadow:0 .28rem 0 #4f37b8}
+.btn.ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:none;border:2px solid rgba(255,255,255,.45)}
+.btn.light{background:var(--soft);color:var(--ink);box-shadow:0 .22rem 0 #cfd2ee}
+.btn.speak.on{background:var(--pink);color:#fff;box-shadow:0 .28rem 0 #c23a66}
+.btn[disabled]{opacity:.5}
+
+/* ---------- screens ---------- */
+.screen{position:fixed;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4.2rem 1rem 2rem}
+.screen.on{display:block;animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(.6rem)}to{opacity:1;transform:none}}
+.wrap{max-width:54rem;margin:0 auto}
+.h1{font-size:1.7rem;font-weight:800;margin:.2rem 0 .8rem;line-height:1.15}
+.lead{color:#d9dcff;margin:0 0 1rem}
+.panel{background:var(--card);color:var(--ink);border-radius:1.4rem;padding:1.1rem 1.2rem;box-shadow:0 .8rem 2rem rgba(0,0,0,.25)}
+.row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.center{text-align:center}
+.mt{margin-top:1.2rem}
+
+/* ---------- home ---------- */
+#s-home{display:none;padding-top:3.6rem}
+#s-home.on{display:flex}
+.home{margin:auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.4rem;padding:1rem 0 2rem;max-width:60rem;width:100%}
+@media (min-aspect-ratio:5/4){.home{flex-direction:row;text-align:left;gap:3rem;justify-content:center}.home .htext{align-items:flex-start}}
+.htext{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.orrery{position:relative;width:min(68vmin,22rem);aspect-ratio:1;flex:0 0 auto}
+.orrery .sun{position:absolute;left:50%;top:50%;width:24%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#fffbe0,#ffd65a 30%,#ff9a1f 65%,#e8590c);box-shadow:0 0 2.5rem 1rem rgba(255,170,40,.45);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 3.2rem 1.4rem rgba(255,170,40,.6)}}
+.orb{position:absolute;left:50%;top:50%;border:2px dashed rgba(255,255,255,.28);border-radius:50%;transform:translate(-50%,-50%) rotate(0);animation:spin linear infinite}
+.orb .pl{position:absolute;left:50%;top:0;border-radius:50%;transform:translate(-50%,-50%)}
+.o1{width:42%;aspect-ratio:1;animation-duration:7s}.o1 .pl{width:9%;aspect-ratio:1;background:radial-gradient(circle at 35% 35%,#e0dad4,#8e8780)}
+.o2{width:62%;aspect-ratio:1;animation-duration:12s}.o2 .pl{width:8%;aspect-ratio:1;background:radial-gradient(circle at 35% 35%,#9fe0ff,#2f86d6 50%,#1b4f9c);box-shadow:inset -.2rem -.1rem 0 rgba(60,170,80,.8)}
+.o3{width:80%;aspect-ratio:1;animation-duration:18s}.o3 .pl{width:7%;aspect-ratio:1;background:radial-gradient(circle at 35% 35%,#ffb08a,#d65a31 55%,#8f2d12)}
+.o4{width:99%;aspect-ratio:1;animation-duration:28s}.o4 .pl{width:12%;aspect-ratio:1;background:radial-gradient(circle at 35% 35%,#fff3d6,#e8cfa0 50%,#b98d54)}
+.o4 .pl::after{content:"";position:absolute;left:-45%;right:-45%;top:38%;bottom:38%;border:.18rem solid rgba(240,220,170,.9);border-radius:50%;transform:rotate(-18deg)}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.badge{display:inline-block;font-size:.85rem;font-weight:700;padding:.2rem .9rem;border-radius:999px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.3)}
+.title{font-size:2.6rem;font-weight:800;line-height:1.02;margin:.2rem 0}
+.title span{display:block;font-size:1.3em;background:linear-gradient(90deg,#ffd65a,#ff8a3d 55%,#ff5d8f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.chips{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:inherit}
+.chips span{background:#fff;color:var(--ink);font-weight:800;font-size:.9rem;padding:.15rem .8rem;border-radius:999px}
+.chips span:nth-child(1){background:var(--teal);color:#fff}.chips span:nth-child(2){background:var(--sun)}.chips span:nth-child(3){background:var(--pink);color:#fff}
+.school{font-size:1.15rem;font-weight:700;margin:.2rem 0 .8rem;color:#e6e8ff}
+
+/* ---------- guide ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:.9rem}
+.step{background:var(--card);color:var(--ink);border-radius:1.3rem;padding:.9rem;display:flex;flex-direction:column;gap:.35rem;position:relative}
+.step .ill{background:linear-gradient(160deg,#e9ecff,#f7f0ff);border-radius:1rem;height:7.2rem;display:flex;align-items:center;justify-content:center}
+.step .ill svg{height:6.4rem;width:auto}
+.step .no{position:absolute;top:.5rem;left:.5rem;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--violet);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.step h3{margin:.2rem 0 0;font-size:1.15rem}
+.step p{margin:0;color:var(--muted);font-size:.95rem}
+
+/* ---------- tujuan ---------- */
+.tplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+.tplist li{display:flex;gap:.8rem;align-items:flex-start;font-size:1.08rem;font-weight:600}
+.tplist li b{flex:0 0 auto;width:2.2rem;height:2.2rem;border-radius:.8rem;background:var(--sun);display:flex;align-items:center;justify-content:center;font-weight:800}
+.tplist li:nth-child(2) b{background:#bfeee8}.tplist li:nth-child(3) b{background:#ffd3e1}
+
+/* ---------- menu ---------- */
+.prog{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.prog .bar{flex:1 1 12rem;height:1rem;border-radius:999px;background:#e6e8fb;overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--sun));border-radius:999px;transition:width .5s}
+.prog .stat{font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.9rem;margin-top:1rem}
+.tile{position:relative;border:0;text-align:left;border-radius:1.4rem;padding:1rem 1.1rem;color:#fff;display:flex;gap:.9rem;align-items:center;min-height:7rem;box-shadow:0 .35rem 0 rgba(0,0,0,.25)}
+.tile:active{transform:translateY(.2rem);box-shadow:0 .1rem 0 rgba(0,0,0,.25)}
+.tile .ic{flex:0 0 auto;width:4rem;height:4rem;border-radius:1.1rem;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center}
+.tile .ic svg{width:2.4rem;height:2.4rem}
+.tile h3{margin:0;font-size:1.3rem;line-height:1.1}
+.tile p{margin:.15rem 0 0;font-size:.9rem;opacity:.95}
+.tile .meta{display:inline-block;margin-top:.3rem;font-weight:800;font-size:.85rem;background:rgba(255,255,255,.25);padding:.05rem .6rem;border-radius:999px}
+.t1{background:linear-gradient(135deg,#3d8bff,#7b5cff)}.t2{background:linear-gradient(135deg,#ff8a3d,#ff5d8f)}
+.t3{background:linear-gradient(135deg,#1fbfae,#1a8fd6)}.t4{background:linear-gradient(135deg,#a259ff,#ff5d8f)}
+.tile.locked{filter:grayscale(.75) brightness(.8)}
+.tile .lk{position:absolute;top:.6rem;right:.7rem;width:1.8rem;height:1.8rem;display:none}
+.tile.locked .lk{display:block}
+.linkrow{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-top:1.3rem}
+
+/* ---------- AR ---------- */
+#s-ar{padding:0;overflow:hidden}
+#arStage{position:absolute;inset:0;overflow:hidden}
+#bg3d{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#2a3384 0%,#111650 55%,#070a24 100%)}
+#bg3d::after{content:"";position:absolute;inset:0;opacity:.8;background-image:radial-gradient(1.5px 1.5px at 30px 40px,#fff,transparent),radial-gradient(1px 1px at 120px 150px,#fff,transparent),radial-gradient(1.8px 1.8px at 210px 70px,#ffe9a8,transparent),radial-gradient(1.2px 1.2px at 60px 200px,#cfe0ff,transparent),radial-gradient(1px 1px at 250px 230px,#fff,transparent);background-size:280px 260px}
+#cam,#photoBg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+#cam.mirror{transform:scaleX(-1)}
+body.bg-camera #cam{display:block}
+body.bg-photo #photoBg{display:block}
+#gl{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+#gl:active{cursor:grabbing}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lbl{position:absolute;left:0;top:0;white-space:nowrap;font-weight:800;font-size:.8rem;padding:.02rem .6rem;border-radius:999px;background:rgba(10,14,46,.72);border:1.5px solid rgba(255,255,255,.45);color:#fff;will-change:transform}
+.lbl.hi{background:var(--sun);color:var(--ink);border-color:#fff}
+body.nolabel .lbl:not(.hi){display:none}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#flash.go{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}
+
+#arTop{position:absolute;top:3.7rem;left:.7rem;right:5rem;z-index:25;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;pointer-events:none}
+#arTop>*{pointer-events:auto}
+.pill{display:inline-flex;align-items:center;gap:.35rem;font-weight:800;font-size:.8rem;padding:.12rem .7rem;border-radius:999px;background:rgba(10,14,46,.7);border:1.5px solid rgba(255,255,255,.35)}
+.pill i{width:.6rem;height:.6rem;border-radius:50%;background:#aaa}
+.pill.cam i{background:#2fe37a;box-shadow:0 0 .5rem #2fe37a}.pill.d3 i{background:#7fb2ff}.pill.photo i{background:var(--sun)}
+.notice{position:relative;width:min(100%,30rem);background:#fff7e0;color:var(--ink);border-radius:1.1rem;padding:.75rem 2.4rem .8rem .9rem;box-shadow:0 .5rem 1.5rem rgba(0,0,0,.3);border:2px solid #ffd36b}
+.notice[hidden]{display:none}
+.notice b{display:block;font-size:1rem}
+.notice span{display:block;font-size:.88rem}
+.notice small{display:block;font-size:.76rem;color:var(--muted);margin-top:.25rem}
+.notice .row{margin-top:.5rem;gap:.45rem}
+.x{position:absolute;top:.35rem;right:.4rem;width:2.2rem;height:2.2rem;border-radius:50%;border:0;background:rgba(29,33,64,.08);color:var(--ink);font-size:1.4rem;font-weight:800;line-height:1;display:flex;align-items:center;justify-content:center}
+.chip-btn{border:0;font-weight:800;font-size:.9rem;padding:.4rem 1rem;border-radius:999px;background:var(--sun);color:var(--ink);box-shadow:0 .2rem 0 var(--sun-d);display:inline-flex;align-items:center;gap:.4rem}
+.chip-btn[hidden]{display:none}
+#missionBar{width:min(100%,32rem);background:#fff;color:var(--ink);border-radius:1.2rem;padding:.75rem .95rem .85rem;box-shadow:0 .5rem 1.5rem rgba(0,0,0,.3);border:3px solid var(--orange)}
+#missionBar[hidden]{display:none}
+.mtop{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--orange);font-size:.9rem}
+.mstars{display:flex;gap:.1rem;color:#d7d9ea}.mstars svg{width:1.2rem;height:1.2rem}.mstars .on{color:var(--sun)}
+#mQ{margin:.2rem 0 .35rem;font-size:1.15rem;font-weight:800;line-height:1.2}
+.mfb{font-weight:700;font-size:.95rem;min-height:0}
+.mfb.ok{color:var(--ok)}.mfb.bad{color:var(--bad)}
+.mhint{font-size:.88rem;background:#fff4d6;border-radius:.7rem;padding:.3rem .6rem;margin-top:.3rem}
+.mhint[hidden]{display:none}
+.mbtns{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+
+#arTools{position:absolute;right:.7rem;top:3.9rem;z-index:25;display:flex;flex-direction:column;gap:.5rem}
+.tool{width:3.7rem;min-height:3.5rem;border-radius:1rem;border:0;background:rgba(255,255,255,.94);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;padding:.3rem .1rem;font-size:.62rem;font-weight:800;line-height:1.05;box-shadow:0 .25rem .8rem rgba(0,0,0,.3)}
+.tool svg{width:1.45rem;height:1.45rem}
+.tool:active{transform:scale(.93)}
+.tool.on{background:var(--sun)}
+@media (max-height:560px) and (orientation:landscape){
+  #arTools{flex-direction:row;top:.45rem;right:4rem}
+  .tool{min-height:2.9rem;width:3.3rem}
+  .tool span{display:none}
+  #arTop{top:3.6rem;right:.7rem}
+}
+#coach{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(var(--stripH,7rem) + 1rem);z-index:22;background:rgba(10,14,46,.82);border:2px solid rgba(255,255,255,.5);padding:.35rem 1rem;border-radius:999px;font-weight:800;font-size:.95rem;white-space:nowrap;animation:bob 1.4s ease-in-out infinite;pointer-events:none}
+#coach[hidden]{display:none}
+@keyframes bob{50%{transform:translate(-50%,-.35rem)}}
+body.mission #coach{bottom:1.5rem}
+
+#strip{position:absolute;left:0;right:0;bottom:0;z-index:20;display:flex;gap:.6rem;overflow-x:auto;padding:.9rem .8rem calc(.8rem + env(safe-area-inset-bottom));scroll-snap-type:x proximity;
+  background:linear-gradient(0deg,rgba(9,13,42,.92) 0%,rgba(9,13,42,.6) 70%,rgba(9,13,42,0));scrollbar-width:none}
+#strip::-webkit-scrollbar{display:none}
+body.mission #strip{display:none}
+.ocard{position:relative;flex:0 0 auto;width:6.2rem;border:3px solid transparent;border-radius:1.1rem;background:rgba(255,255,255,.96);color:var(--ink);padding:.5rem .25rem .4rem;display:flex;flex-direction:column;align-items:center;gap:.25rem;font-weight:800;font-size:.78rem;line-height:1.05;scroll-snap-align:center;transition:transform .15s}
+.ocard:first-child{margin-left:auto}.ocard:last-child{margin-right:auto}
+.ocard.active{border-color:var(--sun);transform:translateY(-.3rem);box-shadow:0 .4rem 1rem rgba(255,201,60,.45)}
+.ocard .chk{position:absolute;top:-.45rem;right:-.35rem;width:1.55rem;height:1.55rem;border-radius:50%;background:var(--ok);color:#fff;border:2px solid #fff;display:none;align-items:center;justify-content:center;font-size:.9rem}
+.ocard.done .chk{display:flex}
+.th{width:3.1rem;height:3.1rem;border-radius:50%;position:relative;flex:0 0 auto}
+.th-tatasurya{border-radius:0;background:none}
+.th-tatasurya svg{width:100%;height:100%}
+.th-matahari{background:radial-gradient(circle at 36% 34%,#fffbe0,#ffd65a 30%,#ff9a1f 65%,#e8590c);box-shadow:0 0 .8rem rgba(255,160,40,.7)}
+.th-merkurius{background:radial-gradient(circle at 36% 34%,#e2ddd8,#9b948e 55%,#5e5853)}
+.th-venus{background:radial-gradient(circle at 36% 34%,#fff4d4,#e8c27a 50%,#b4823a)}
+.th-bumi{background:radial-gradient(circle at 62% 38%,#4caf50 0 16%,transparent 17%),radial-gradient(circle at 34% 66%,#5fbf5a 0 13%,transparent 14%),radial-gradient(ellipse at 50% 4%,#fff 0 10%,transparent 11%),radial-gradient(circle at 36% 34%,#9fe0ff,#2f86d6 48%,#163f86)}
+.th-mars{background:radial-gradient(ellipse at 50% 3%,#fff 0 11%,transparent 12%),radial-gradient(circle at 36% 34%,#ffb08a,#d65a31 52%,#8f2d12)}
+.th-jupiter{background:radial-gradient(ellipse at 64% 66%,#c0442a 0 9%,transparent 10%),radial-gradient(circle at 36% 34%,rgba(255,255,255,.35),transparent 55%,rgba(0,0,0,.4)),repeating-linear-gradient(180deg,#f1dfc0 0 12%,#c98d5a 12% 19%,#e8cfa5 19% 30%,#a8683f 30% 35%)}
+.th-saturnus{background:radial-gradient(circle at 36% 34%,#fff3d6,#e8cfa0 50%,#b98d54);transform:scale(.78)}
+.th-saturnus::after{content:"";position:absolute;left:-42%;right:-42%;top:36%;bottom:36%;border:.25rem solid rgba(214,190,140,.95);border-radius:50%;transform:rotate(-16deg)}
+
+#infoSheet{position:absolute;left:50%;bottom:calc(var(--stripH,7rem) + .5rem);transform:translate(-50%,140%);width:min(94vw,34rem);max-height:min(58vh,30rem);overflow-y:auto;z-index:30;background:#fff;color:var(--ink);border-radius:1.4rem;padding:.9rem 1.1rem 1rem;box-shadow:0 1rem 2.5rem rgba(0,0,0,.45);transition:transform .35s cubic-bezier(.2,1.25,.4,1);visibility:hidden}
+#infoSheet.on{transform:translate(-50%,0);visibility:visible}
+@media (min-width:1100px) and (orientation:landscape){#infoSheet{left:auto;right:5.6rem;bottom:calc(var(--stripH,7rem) + .8rem);transform:translate(0,140%)}#infoSheet.on{transform:none}}
+.tag{display:inline-block;font-size:.78rem;font-weight:800;color:#fff;background:var(--violet);padding:.05rem .65rem;border-radius:999px}
+#infoTitle{margin:.25rem 0 .35rem;font-size:1.45rem;line-height:1.1}
+#infoFacts{margin:0 0 .7rem;padding-left:1.25rem;display:flex;flex-direction:column;gap:.35rem;font-size:1rem;font-weight:600}
+#infoFacts li::marker{color:var(--orange)}
+
+/* ---------- quiz ---------- */
+.qhead{display:flex;align-items:center;gap:.8rem;margin-bottom:.8rem;font-weight:800}
+.qhead .bar{flex:1;height:.8rem;border-radius:999px;background:rgba(255,255,255,.2);overflow:hidden}
+.qhead .bar i{display:block;height:100%;background:var(--sun);border-radius:999px;transition:width .3s}
+#qText{font-size:1.3rem;font-weight:800;margin:0 0 .6rem;line-height:1.25}
+.opts{display:grid;gap:.6rem;margin-top:.9rem}
+@media (min-width:760px){.opts{grid-template-columns:1fr 1fr}}
+.opt{display:flex;align-items:center;gap:.7rem;text-align:left;border:3px solid transparent;background:#fff;color:var(--ink);border-radius:1.1rem;padding:.6rem .8rem;font-weight:700;font-size:1.05rem;min-height:3.6rem;box-shadow:0 .25rem 0 #c9cbe6}
+.opt b{flex:0 0 auto;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center}
+.opt.sel{border-color:var(--violet);background:#f1edff}
+.opt.sel b{background:var(--violet);color:#fff}
+.qnav{display:flex;justify-content:space-between;gap:.7rem;margin-top:1.1rem}
+.score{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap}
+.score .big{width:7.5rem;height:7.5rem;border-radius:50%;background:conic-gradient(var(--teal) var(--p,0%),#e6e8fb 0);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.score .big span{width:5.9rem;height:5.9rem;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2rem;font-weight:800;line-height:1}
+.score .big small{font-size:.75rem;color:var(--muted)}
+.rev{list-style:none;padding:0;margin:1rem 0 0;display:flex;flex-direction:column;gap:.6rem}
+.rev li{border-radius:1rem;padding:.6rem .8rem;background:var(--soft);border-left:.4rem solid var(--ok)}
+.rev li.no{border-left-color:var(--bad)}
+.rev .q{font-weight:800}
+.rev .a{font-size:.92rem}
+.rev .e{font-size:.9rem;color:var(--muted);margin-top:.15rem}
+
+/* ---------- refleksi / selesai ---------- */
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
+.field label{font-weight:800;font-size:1.05rem;display:flex;gap:.6rem;align-items:flex-start;justify-content:space-between}
+.field input,.field textarea{width:100%;border:2.5px solid #d8dbf3;border-radius:1rem;padding:.6rem .8rem;font-size:1.05rem;color:var(--ink);background:#fbfbff;outline:none}
+.field textarea{min-height:6rem;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--violet)}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.7rem;margin:1rem 0}
+.sum div{background:var(--soft);border-radius:1rem;padding:.7rem;text-align:center;font-weight:700;color:var(--muted)}
+.sum b{display:block;font-size:1.6rem;color:var(--ink)}
+.answers p{margin:.2rem 0 .8rem;font-weight:600}
+.answers h4{margin:0;color:var(--violet)}
+.trophy{width:6rem;height:6rem;margin:0 auto}
+
+/* ---------- modal & toast ---------- */
+#modal{position:fixed;inset:0;z-index:100;background:rgba(5,8,28,.6);display:none;align-items:center;justify-content:center;padding:1rem}
+#modal.on{display:flex;animation:fadein .25s}
+#modal .panel{width:min(100%,30rem);max-height:90vh;overflow:auto;text-align:center}
+#modal h3{margin:.2rem 0 .4rem;font-size:1.45rem}
+#modal .mbody{color:var(--muted);font-weight:600}
+#modal .mbody img{max-width:100%;max-height:52vh;border-radius:1rem;display:block;margin:0 auto}
+#modal .row{justify-content:center;margin-top:1rem}
+#toast{position:fixed;left:50%;bottom:calc(var(--stripH,1rem) + 1.2rem);transform:translate(-50%,1rem);z-index:90;background:rgba(10,14,46,.94);border:2px solid rgba(255,255,255,.35);color:#fff;padding:.45rem 1.1rem;border-radius:999px;font-weight:700;font-size:.95rem;opacity:0;pointer-events:none;transition:.25s;max-width:92vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+body[data-screen=ar] #toast{bottom:auto;top:3.9rem;transform:translate(-50%,-1rem)}
+body[data-screen=ar] #toast.on{transform:translate(-50%,0)}
+body[data-scene=tatasurya] .lbl{font-size:.68rem;padding:0 .45rem}
+@media (max-width:600px){#infoFacts{font-size:.93rem}#infoTitle{font-size:1.3rem}#infoSheet{max-height:48vh}}
+.stars3{display:flex;justify-content:center;gap:.3rem;color:#d7d9ea;margin:.4rem 0}
+.stars3 svg{width:2.4rem;height:2.4rem}.stars3 .on{color:var(--sun)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="ibtn" id="btnBack" aria-label="Kembali" hidden><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <h2 id="topTitle"></h2>
+  <button class="ibtn" id="btnSound" aria-label="Suara"></button>
+</header>
+
+<!-- ============ HALAMAN PEMBUKA ============ -->
+<section id="s-home" class="screen on">
+  <div class="home">
+    <div class="orrery" aria-hidden="true">
+      <div class="orb o4"><i class="pl"></i></div>
+      <div class="orb o3"><i class="pl"></i></div>
+      <div class="orb o2"><i class="pl"></i></div>
+      <div class="orb o1"><i class="pl"></i></div>
+      <div class="sun"></div>
+    </div>
+    <div class="htext">
+      <span class="badge">Media Pembelajaran Interaktif · AR</span>
+      <div class="title">Menjelajah <span>Tata Surya</span></div>
+      <div class="chips"><span>IPAS</span><span>Kelas 6</span><span>Fase C</span></div>
+      <p class="school">SD Negeri 1 Ardimulyo</p>
+      <button class="btn big" data-go="guide">Mulai</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PETUNJUK ============ -->
+<section id="s-guide" class="screen">
+  <div class="wrap">
+    <div class="h1">Cara Memakai MPI AR</div>
+    <p class="lead">Ikuti 4 langkah ini agar objek 3D muncul dan bisa kamu jelajahi.</p>
+    <div class="steps">
+      <div class="step"><span class="no">1</span>
+        <div class="ill"><svg viewBox="0 0 160 120"><rect x="52" y="8" width="56" height="104" rx="12" fill="#2b2f6b"/><rect x="58" y="20" width="44" height="76" rx="5" fill="#8fd3ff"/><circle cx="80" cy="14" r="2.5" fill="#8a8fc4"/><rect x="62" y="52" width="36" height="30" rx="6" fill="#fff"/><text x="80" y="62" font-size="7" font-weight="700" text-anchor="middle" fill="#1d2140">Kamera?</text><rect x="66" y="67" width="28" height="10" rx="5" fill="#1fae63"/><text x="80" y="74.5" font-size="6.5" font-weight="700" text-anchor="middle" fill="#fff">Izinkan</text><circle cx="80" cy="34" r="8" fill="#ffc93c"/><path d="M118 70c10-4 18 2 18 12v18h-20l-6-16z" fill="#ffcfa8"/><circle cx="96" cy="72" r="6" fill="none" stroke="#ff5d8f" stroke-width="3"/></svg></div>
+        <h3>Izinkan kamera</h3><p>Saat diminta, ketuk <b>Izinkan</b>. Kamera menyala dan objek 3D muncul di ruanganmu.</p></div>
+      <div class="step"><span class="no">2</span>
+        <div class="ill"><svg viewBox="0 0 160 120"><circle cx="80" cy="52" r="30" fill="#3d8bff"/><path d="M58 40c10 4 26 2 38-6M54 60c16 6 40 4 52-4" stroke="#7dd36b" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M40 52a40 18 0 0 0 80 0" fill="none" stroke="#ff8a3d" stroke-width="4" stroke-dasharray="6 5"/><path d="M116 46l6 8-10 2" fill="none" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80" cy="100" r="9" fill="#ffcfa8" stroke="#e8a77a" stroke-width="2"/><path d="M62 100h-12m60 0h-12" stroke="#7b5cff" stroke-width="4" stroke-linecap="round"/><path d="M54 95l-5 5 5 5M106 95l5 5-5 5" fill="none" stroke="#7b5cff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Putar</h3><p>Geser <b>satu jari</b> untuk memutar objek. Di laptop, tarik dengan mouse.</p></div>
+      <div class="step"><span class="no">3</span>
+        <div class="ill"><svg viewBox="0 0 160 120"><circle cx="80" cy="56" r="16" fill="#d65a31" opacity=".35"/><circle cx="80" cy="56" r="28" fill="#d65a31"/><circle cx="72" cy="47" r="7" fill="#f08a5d"/><circle cx="40" cy="96" r="9" fill="#ffcfa8" stroke="#e8a77a" stroke-width="2"/><circle cx="120" cy="96" r="9" fill="#ffcfa8" stroke="#e8a77a" stroke-width="2"/><path d="M50 88l14-12M110 88L96 76" stroke="#7b5cff" stroke-width="4" stroke-linecap="round"/><path d="M58 74h7v7M102 74h-7v7" fill="none" stroke="#7b5cff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Perbesar</h3><p><b>Cubit dua jari</b> untuk memperbesar atau memperkecil. Geser dua jari untuk memindahkan. Di laptop, pakai roda mouse.</p></div>
+      <div class="step"><span class="no">4</span>
+        <div class="ill"><svg viewBox="0 0 160 120"><circle cx="62" cy="58" r="30" fill="#e8cfa0"/><path d="M34 52h56M33 64h58" stroke="#b98d54" stroke-width="5"/><ellipse cx="62" cy="58" rx="50" ry="12" fill="none" stroke="#d6be8c" stroke-width="5" transform="rotate(-14 62 58)"/><circle cx="70" cy="66" r="14" fill="none" stroke="#ffc93c" stroke-width="3"/><circle cx="70" cy="66" r="22" fill="none" stroke="#ffc93c" stroke-width="2" opacity=".6"/><rect x="104" y="14" width="48" height="34" rx="8" fill="#fff" stroke="#7b5cff" stroke-width="3"/><path d="M112 25h32M112 33h24M112 40h28" stroke="#c9c6ef" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="66" r="7" fill="#ffcfa8" stroke="#e8a77a" stroke-width="2"/></svg></div>
+        <h3>Ketuk objek</h3><p>Ketuk objek atau bagiannya untuk membaca faktanya. Tekan <b>Dengarkan</b> agar dibacakan.</p></div>
+    </div>
+    <div class="row mt" style="justify-content:center">
+      <button class="btn light speak" id="guideSpeak">Dengarkan Petunjuk</button>
+      <button class="btn" data-go="tp">Lanjut</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TUJUAN PEMBELAJARAN ============ -->
+<section id="s-tp" class="screen">
+  <div class="wrap">
+    <div class="h1">Tujuan Pembelajaran</div>
+    <p class="lead">Setelah memakai MPI ini, kamu diharapkan dapat:</p>
+    <div class="panel"><ol class="tplist" id="tpList"></ol></div>
+    <div class="row mt" style="justify-content:center">
+      <button class="btn light speak" id="tpSpeak">Dengarkan</button>
+      <button class="btn" data-go="menu">Ke Menu Belajar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section id="s-menu" class="screen">
+  <div class="wrap">
+    <div class="h1">Menu Belajar</div>
+    <div class="panel prog">
+      <span class="stat" id="progText">Objek dipelajari 0/8</span>
+      <div class="bar"><i id="progBar"></i></div>
+    </div>
+    <div class="tiles">
+      <button class="tile t1" id="tileAR"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z M4 7.5l8 4.5 8-4.5 M12 12v9" fill="none" stroke="#fff" stroke-width="1.9" stroke-linejoin="round"/></svg></span><span><h3>Jelajah AR</h3><p>Amati 8 objek 3D dan ketuk untuk membaca faktanya.</p><span class="meta" id="metaAR"></span></span></button>
+      <button class="tile t2" id="tileMisi"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="4.5" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="1.4" fill="#fff"/></svg></span><span><h3>Misi AR</h3><p>Temukan planet yang tepat dan kumpulkan bintang.</p><span class="meta" id="metaMisi"></span></span></button>
+      <button class="tile t3" id="tileKuis"><svg class="lk" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" fill="#fff"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2.4"/></svg><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M8 9l2 2 4-4M8 16h8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><h3>Kuis</h3><p id="kuisDesc">10 soal pilihan ganda.</p><span class="meta" id="metaKuis"></span></span></button>
+      <button class="tile t4" id="tileRefl"><svg class="lk" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" fill="#fff"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#fff" stroke-width="2.4"/></svg><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></span><span><h3>Refleksi</h3><p id="reflDesc">Tulis hal yang kamu pelajari hari ini.</p><span class="meta" id="metaRefl"></span></span></button>
+    </div>
+    <div class="linkrow">
+      <button class="btn ghost sm" data-go="guide">Petunjuk</button>
+      <button class="btn ghost sm" data-go="tp">Tujuan Pembelajaran</button>
+      <button class="btn ghost sm" id="btnReset">Mulai ulang untuk murid lain</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AR ============ -->
+<section id="s-ar" class="screen">
+  <div id="arStage">
+    <div id="bg3d"></div>
+    <video id="cam" playsinline muted autoplay></video>
+    <img id="photoBg" alt="">
+    <canvas id="gl" aria-label="Tampilan objek 3D. Geser untuk memutar, cubit untuk memperbesar, ketuk untuk melihat info."></canvas>
+    <div id="labels"></div>
+    <div id="flash"></div>
+  </div>
+  <div id="arTop">
+    <span class="pill d3" id="modePill"><i></i><span>Mode 3D</span></span>
+    <div id="missionBar" hidden>
+      <div class="mtop"><span id="mNum">Misi 1 dari 5</span><span class="mstars" id="mStars"></span></div>
+      <p id="mQ"></p>
+      <div class="mfb" id="mFb"></div>
+      <div class="mhint" id="mHint" hidden></div>
+      <div class="mbtns">
+        <button class="btn sm light speak" id="mSpeak">Dengarkan</button>
+        <button class="btn sm" id="mNext" hidden>Misi Berikutnya</button>
+      </div>
+    </div>
+    <div class="notice" id="notice" hidden>
+      <button class="x" id="nClose" aria-label="Tutup">×</button>
+      <b id="nTitle">Kamera tidak menyala</b>
+      <span id="nMsg"></span>
+      <small id="nTip"></small>
+      <div class="row">
+        <button class="btn sm" id="nRetry">Coba Lagi</button>
+        <button class="btn sm light" id="nPhoto">Pakai Foto Ruangan</button>
+      </div>
+    </div>
+    <button class="chip-btn" id="aboutBtn" hidden>ⓘ Tentang Tata Surya</button>
+  </div>
+  <div id="arTools">
+    <button class="tool" id="tReset"><svg viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M5 3.5v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reset</span></button>
+    <button class="tool" id="tCam"></button>
+    <button class="tool" id="tPhotoBg"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="2" fill="currentColor"/><path d="M4 17l5-5 4 4 3-3 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>Foto Latar</span></button>
+    <button class="tool" id="tShot"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Ambil Foto</span></button>
+    <button class="tool on" id="tLabel"><svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="8.5" r="1.6" fill="currentColor"/></svg><span>Label</span></button>
+  </div>
+  <div id="coach" hidden>👆 Ketuk objeknya untuk melihat info</div>
+  <div id="infoSheet" role="dialog" aria-live="polite">
+    <button class="x" id="infoClose" aria-label="Tutup">×</button>
+    <span class="tag" id="infoTag"></span>
+    <h3 id="infoTitle"></h3>
+    <ul id="infoFacts"></ul>
+    <button class="btn sm speak" id="infoSpeak">Dengarkan</button>
+  </div>
+  <div id="strip"></div>
+  <input type="file" id="photoInput" accept="image/*" hidden>
+</section>
+
+<!-- ============ KUIS ============ -->
+<section id="s-quiz" class="screen">
+  <div class="wrap" id="qMain">
+    <div class="qhead"><span id="qNum">Soal 1 dari 10</span><div class="bar"><i id="qBar"></i></div></div>
+    <div class="panel">
+      <p id="qText"></p>
+      <button class="btn sm light speak" id="qSpeak">Dengarkan</button>
+    </div>
+    <div class="opts" id="qOpts"></div>
+    <div class="qnav">
+      <button class="btn ghost" id="qPrev">Sebelumnya</button>
+      <button class="btn" id="qNext">Berikutnya</button>
+    </div>
+  </div>
+  <div class="wrap" id="qResult" hidden>
+    <div class="panel">
+      <div class="score">
+        <div class="big" id="qScoreRing"><span><b id="qScore">0</b><small>nilai</small></span></div>
+        <div><div class="h1" style="margin:0" id="qMsg"></div><p style="margin:.2rem 0 0;color:var(--muted);font-weight:700" id="qSub"></p></div>
+      </div>
+      <h3 style="margin:1.1rem 0 0">Pembahasan</h3>
+      <ul class="rev" id="qRev"></ul>
+      <div class="row mt" style="justify-content:center">
+        <button class="btn light" id="qRetry">Ulangi Kuis</button>
+        <button class="btn" data-go="refl">Lanjut ke Refleksi</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REFLEKSI ============ -->
+<section id="s-refl" class="screen">
+  <div class="wrap">
+    <div class="h1">Refleksi</div>
+    <p class="lead">Jawab dengan kalimatmu sendiri. Tidak ada jawaban yang salah.</p>
+    <div class="panel">
+      <div class="field"><label for="rNama">Namamu (boleh dikosongkan)</label><input id="rNama" maxlength="40" autocomplete="off"></div>
+      <div class="field"><label for="rA1"><span id="rQ1"></span><button class="btn sm light speak" data-speak="1">Dengarkan</button></label><textarea id="rA1" maxlength="400"></textarea></div>
+      <div class="field"><label for="rA2"><span id="rQ2"></span><button class="btn sm light speak" data-speak="2">Dengarkan</button></label><textarea id="rA2" maxlength="400"></textarea></div>
+      <div class="row" style="justify-content:center"><button class="btn" id="rDone">Selesai</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SELESAI ============ -->
+<section id="s-done" class="screen">
+  <div class="wrap">
+    <div class="panel center">
+      <svg class="trophy" viewBox="0 0 64 64"><path d="M18 8h28v14a14 14 0 0 1-28 0z" fill="#ffc93c"/><path d="M18 12H8v4a10 10 0 0 0 10 10M46 12h10v4a10 10 0 0 1-10 10" fill="none" stroke="#ffc93c" stroke-width="4"/><rect x="28" y="34" width="8" height="10" fill="#e3a400"/><rect x="20" y="44" width="24" height="8" rx="3" fill="#7b5cff"/><path d="M32 12l2.4 5 5.4.6-4 3.7 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.7 5.4-.6z" fill="#fff"/></svg>
+      <div class="h1" id="dTitle">Hebat, kamu sudah selesai!</div>
+      <p style="color:var(--muted);font-weight:700;margin:0">Menjelajah Tata Surya · SD Negeri 1 Ardimulyo</p>
+      <div class="sum" id="dSum"></div>
+      <div class="answers" id="dAns" style="text-align:left"></div>
+      <div class="row" style="justify-content:center">
+        <button class="btn light" data-go="menu">Kembali ke Menu</button>
+        <button class="btn violet" id="dReset">Mulai ulang untuk murid lain</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="modal" role="dialog" aria-modal="true"><div class="panel"><h3 id="mdTitle"></h3><div class="mbody" id="mdBody"></div><div class="row" id="mdBtns"></div></div></div>
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =====================================================================
+   DATA MATERI
+   ===================================================================== */
+var TP = [
+  'Menyebutkan anggota tata surya dan mengurutkan delapan planet dari yang terdekat dengan Matahari.',
+  'Mendeskripsikan ciri khas Matahari, planet, dan satelit melalui pengamatan model 3D.',
+  'Menjelaskan rotasi dan revolusi Bumi serta akibatnya, yaitu terjadinya siang dan malam serta pergantian tahun.'
+];
+
+var OBJECTS = [
+  {id:'tatasurya', nama:'Tata Surya'},
+  {id:'matahari', nama:'Matahari'},
+  {id:'merkurius', nama:'Merkurius'},
+  {id:'venus', nama:'Venus'},
+  {id:'bumi', nama:'Bumi & Bulan'},
+  {id:'mars', nama:'Mars'},
+  {id:'jupiter', nama:'Jupiter'},
+  {id:'saturnus', nama:'Saturnus'}
+];
+
+var PARTS = {
+  'tatasurya-info': {nama:'Sistem Tata Surya', jenis:'Model tata surya', fakta:[
+    'Tata surya terdiri atas Matahari sebagai pusat, delapan planet, satelit, asteroid, dan benda langit lainnya.',
+    'Urutan planet dari yang terdekat dengan Matahari: Merkurius, Venus, Bumi, Mars, Jupiter, Saturnus, Uranus, dan Neptunus.',
+    'Setiap planet berputar pada porosnya (rotasi) sambil beredar mengelilingi Matahari (revolusi) melalui lintasan yang disebut orbit.',
+    'Ukuran dan jarak pada model ini tidak sesuai skala sebenarnya agar semua planet bisa terlihat.']},
+  matahari: {nama:'Matahari', jenis:'Bintang, pusat tata surya', fakta:[
+    'Matahari adalah bintang, yaitu benda langit yang memancarkan cahaya dan panasnya sendiri.',
+    'Matahari adalah pusat tata surya. Semua planet beredar mengelilinginya.',
+    'Matahari sangat besar. Diameternya sekitar 109 kali diameter Bumi.']},
+  korona: {nama:'Korona Matahari', jenis:'Bagian Matahari', fakta:[
+    'Korona adalah lapisan terluar atmosfer Matahari. Bentuknya seperti cahaya yang mengelilingi Matahari.',
+    'Korona biasanya hanya terlihat jelas saat terjadi gerhana Matahari total.',
+    'Ingat, jangan pernah melihat Matahari secara langsung tanpa pelindung mata khusus!']},
+  merkurius: {nama:'Merkurius', jenis:'Planet ke-1 dari Matahari', fakta:[
+    'Merkurius adalah planet yang paling dekat dengan Matahari sekaligus planet terkecil.',
+    'Permukaannya penuh kawah, mirip permukaan Bulan.',
+    'Merkurius mengelilingi Matahari hanya dalam 88 hari dan tidak memiliki satelit.']},
+  venus: {nama:'Venus', jenis:'Planet ke-2 dari Matahari', fakta:[
+    'Venus adalah planet terpanas di tata surya. Suhu permukaannya lebih dari 400 °C.',
+    'Venus berotasi ke arah yang berlawanan dengan kebanyakan planet lain.',
+    'Venus tampak sangat terang di langit pagi atau senja sehingga sering disebut bintang kejora, padahal Venus adalah planet.']},
+  'atmosfer-venus': {nama:'Atmosfer Venus', jenis:'Bagian Venus', fakta:[
+    'Venus diselimuti atmosfer yang sangat tebal. Sebagian besar isinya gas karbon dioksida.',
+    'Atmosfer tebal ini memerangkap panas Matahari. Akibatnya, Venus lebih panas daripada Merkurius walaupun letaknya lebih jauh dari Matahari.']},
+  bumi: {nama:'Bumi', jenis:'Planet ke-3 dari Matahari', fakta:[
+    'Bumi adalah satu-satunya planet yang diketahui memiliki makhluk hidup. Sekitar 71% permukaannya tertutup air.',
+    'Bumi berotasi pada porosnya (garis putih pada model) sekali dalam sekitar 24 jam. Rotasi inilah yang menyebabkan siang dan malam.',
+    'Bumi berevolusi mengelilingi Matahari sekali dalam sekitar 365¼ hari, yaitu satu tahun.']},
+  bulan: {nama:'Bulan', jenis:'Satelit alami Bumi', fakta:[
+    'Bulan adalah satelit alami Bumi. Bulan beredar mengelilingi Bumi.',
+    'Bulan tidak memancarkan cahaya sendiri. Bulan tampak terang karena memantulkan cahaya Matahari.',
+    'Bulan membutuhkan sekitar 27 hari untuk sekali mengelilingi Bumi.']},
+  mars: {nama:'Mars', jenis:'Planet ke-4 dari Matahari', fakta:[
+    'Mars disebut planet merah karena tanahnya banyak mengandung besi berkarat (besi oksida).',
+    'Di Mars ada Olympus Mons, gunung tertinggi di tata surya. Tingginya sekitar dua setengah kali Gunung Everest.',
+    'Mars memiliki dua satelit kecil, yaitu Phobos dan Deimos.']},
+  'kutub-es-mars': {nama:'Kutub Es Mars', jenis:'Bagian Mars', fakta:[
+    'Kutub utara dan kutub selatan Mars tertutup lapisan es.',
+    'Es di kutub Mars terdiri atas es air dan es karbon dioksida (es kering).']},
+  phobos: {nama:'Phobos', jenis:'Satelit Mars', fakta:[
+    'Phobos adalah satelit Mars yang lebih besar dan lebih dekat ke Mars.',
+    'Bentuknya tidak bulat, tetapi lonjong seperti kentang.']},
+  deimos: {nama:'Deimos', jenis:'Satelit Mars', fakta:[
+    'Deimos adalah satelit Mars yang lebih kecil dan letaknya lebih jauh.',
+    'Seperti Phobos, bentuk Deimos juga tidak bulat.']},
+  jupiter: {nama:'Jupiter', jenis:'Planet ke-5 dari Matahari', fakta:[
+    'Jupiter adalah planet terbesar di tata surya. Lebih dari 1.000 Bumi bisa masuk ke dalamnya.',
+    'Jupiter adalah planet gas, jadi tidak memiliki permukaan padat untuk dipijak.',
+    'Jupiter berotasi paling cepat. Satu hari di Jupiter hanya sekitar 10 jam.']},
+  'bintik-merah': {nama:'Bintik Merah Raksasa', jenis:'Bagian Jupiter', fakta:[
+    'Bintik Merah Raksasa adalah badai raksasa yang berputar di atmosfer Jupiter.',
+    'Badai ini lebih besar daripada Bumi dan sudah diamati selama lebih dari 150 tahun.']},
+  saturnus: {nama:'Saturnus', jenis:'Planet ke-6 dari Matahari', fakta:[
+    'Saturnus terkenal karena cincinnya yang indah.',
+    'Saturnus adalah planet terbesar kedua setelah Jupiter dan termasuk planet gas.',
+    'Massa jenis Saturnus lebih kecil daripada air. Saturnus adalah planet paling ringan untuk ukurannya.']},
+  'cincin-saturnus': {nama:'Cincin Saturnus', jenis:'Bagian Saturnus', fakta:[
+    'Cincin Saturnus tersusun dari bongkahan es dan batuan. Ada yang sekecil butiran debu, ada yang sebesar rumah.',
+    'Cincinnya sangat lebar, tetapi sangat tipis.']},
+  uranus: {nama:'Uranus', jenis:'Planet ke-7 dari Matahari', fakta:[
+    'Uranus berotasi dalam posisi hampir rebah, seperti bola yang menggelinding.',
+    'Warnanya biru kehijauan karena atmosfernya mengandung gas metana.',
+    'Uranus adalah planet pertama yang ditemukan dengan bantuan teleskop.']},
+  neptunus: {nama:'Neptunus', jenis:'Planet ke-8 dari Matahari', fakta:[
+    'Neptunus adalah planet terjauh dari Matahari.',
+    'Neptunus memiliki angin paling kencang di tata surya.',
+    'Neptunus membutuhkan sekitar 165 tahun untuk sekali mengelilingi Matahari.']},
+  'sabuk-asteroid': {nama:'Sabuk Asteroid', jenis:'Kumpulan batuan', fakta:[
+    'Sabuk asteroid terletak di antara orbit Mars dan Jupiter.',
+    'Isinya jutaan batuan berbagai ukuran yang beredar mengelilingi Matahari.']}
+};
+
+var MISSIONS = [
+  {q:'Ketuk planet yang paling dekat dengan Matahari.', a:'merkurius', hint:'Petunjuk: planet ini berada di orbit paling dalam.'},
+  {q:'Ketuk planet terbesar di tata surya.', a:'jupiter', hint:'Petunjuk: planet ini bergaris-garis dan memiliki bintik merah.'},
+  {q:'Ketuk satu-satunya planet yang dihuni makhluk hidup.', a:'bumi', hint:'Petunjuk: planet biru-hijau ke-3 dari Matahari.'},
+  {q:'Ketuk planet yang memiliki cincin paling indah.', a:'saturnus', hint:'Petunjuk: cari planet yang dikelilingi cincin lebar.'},
+  {q:'Ketuk planet yang paling jauh dari Matahari.', a:'neptunus', hint:'Petunjuk: planet biru di orbit paling luar.'}
+];
+
+var QUIZ = [
+  {q:'Pusat tata surya adalah ....', o:['Bumi','Bulan','Matahari','Jupiter'], a:2,
+   e:'Matahari adalah pusat tata surya. Semua planet beredar mengelilingi Matahari.'},
+  {q:'Planet yang paling dekat dengan Matahari adalah ....', o:['Venus','Merkurius','Mars','Bumi'], a:1,
+   e:'Merkurius adalah planet pertama, yaitu planet yang paling dekat dengan Matahari.'},
+  {q:'Planet terbesar di tata surya adalah ....', o:['Saturnus','Neptunus','Jupiter','Uranus'], a:2,
+   e:'Jupiter adalah planet terbesar. Lebih dari 1.000 Bumi bisa masuk ke dalamnya.'},
+  {q:'Mars disebut planet merah karena ....', o:['permukaannya dipenuhi lava panas','tanahnya banyak mengandung besi berkarat','Mars memantulkan cahaya Bulan','Mars paling dekat dengan Matahari'], a:1,
+   e:'Tanah Mars banyak mengandung besi berkarat (besi oksida) sehingga tampak kemerahan.'},
+  {q:'Venus menjadi planet terpanas walaupun bukan planet terdekat dengan Matahari. Penyebabnya adalah ....', o:['Venus memiliki cincin yang memantulkan panas','Venus adalah planet terbesar','atmosfer Venus yang tebal memerangkap panas Matahari','Venus tidak memiliki poros'], a:2,
+   e:'Atmosfer Venus sangat tebal dan memerangkap panas Matahari, sehingga Venus lebih panas daripada Merkurius.'},
+  {q:'Bulan tampak terang pada malam hari karena ....', o:['Bulan memancarkan cahayanya sendiri','Bulan memantulkan cahaya Matahari','Bulan adalah sebuah bintang','Bulan memantulkan cahaya lampu kota'], a:1,
+   e:'Bulan tidak memancarkan cahaya sendiri. Cahaya Bulan adalah cahaya Matahari yang dipantulkan.'},
+  {q:'Terjadinya siang dan malam disebabkan oleh ....', o:['revolusi Bumi','rotasi Bumi','revolusi Bulan','gerhana Matahari'], a:1,
+   e:'Rotasi adalah perputaran Bumi pada porosnya. Bagian Bumi yang menghadap Matahari mengalami siang, sedangkan bagian yang membelakangi Matahari mengalami malam.'},
+  {q:'Waktu yang dibutuhkan Bumi untuk sekali mengelilingi Matahari adalah sekitar ....', o:['24 jam','27 hari','365¼ hari','88 hari'], a:2,
+   e:'Revolusi Bumi, yaitu beredarnya Bumi mengelilingi Matahari, berlangsung sekitar 365¼ hari atau satu tahun.'},
+  {q:'Urutan planet yang benar, dimulai dari yang terdekat dengan Matahari, adalah ....', o:['Merkurius, Venus, Bumi, Mars','Venus, Merkurius, Bumi, Mars','Merkurius, Bumi, Venus, Mars','Mars, Bumi, Venus, Merkurius'], a:0,
+   e:'Urutan dari yang terdekat: Merkurius, Venus, Bumi, Mars, Jupiter, Saturnus, Uranus, Neptunus.'},
+  {q:'Cincin Saturnus tersusun dari ....', o:['gas panas yang menyala','bongkahan es dan batuan','cahaya Matahari','awan hujan'], a:1,
+   e:'Cincin Saturnus tersusun dari bongkahan es dan batuan dengan berbagai ukuran.'}
+];
+
+var REFL = [
+  'Hal apa yang paling menarik yang kamu pelajari tentang tata surya hari ini? Mengapa?',
+  'Bagian mana yang masih sulit kamu pahami, dan apa yang ingin kamu ketahui lebih lanjut?'
+];
+
+/* =====================================================================
+   UTILITAS
+   ===================================================================== */
+var $ = function(s, r){ return (r || document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function shuffle(a){ a = a.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+var KEY = 'mpiArTataSurya_v1_';
+var store = {
+  get: function(k, d){ try { var v = localStorage.getItem(KEY + k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set: function(k, v){ try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch(e){} }
+};
+var S = {
+  learned: store.get('learned', []),
+  stars: store.get('stars', [0,0,0,0,0]),
+  quiz: store.get('quiz', null),
+  refl: store.get('refl', {nama:'', a1:'', a2:''}),
+  sound: store.get('sound', true),
+  camPref: store.get('camPref', true)
+};
+if (!Array.isArray(S.learned)) S.learned = [];
+if (!Array.isArray(S.stars) || S.stars.length !== MISSIONS.length) S.stars = [0,0,0,0,0];
+if (!S.refl || typeof S.refl !== 'object') S.refl = {nama:'', a1:'', a2:''};
+function save(){ store.set('learned', S.learned); store.set('stars', S.stars); store.set('quiz', S.quiz); store.set('refl', S.refl); store.set('sound', S.sound); store.set('camPref', S.camPref); }
+function learnedCount(){ return S.learned.length; }
+function starSum(){ return S.stars.reduce(function(a, b){ return a + (b || 0); }, 0); }
+
+var ICON = {
+  soundOn: '<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.6 6a8.6 8.6 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  soundOff: '<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  speak: '<svg viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  stop: '<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>',
+  cam: '<svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="11" rx="2.5" fill="currentColor"/><path d="M16 11l5-3v9l-5-3z" fill="currentColor"/></svg>',
+  cube: '<svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z M4 7.5l8 4.5 8-4.5 M12 12v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+  star: '<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor"/></svg>',
+  solar: '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="none" stroke="#8a90c8" stroke-width="1.4" stroke-dasharray="3 2.5"/><circle cx="24" cy="24" r="14" fill="none" stroke="#8a90c8" stroke-width="1.4" stroke-dasharray="3 2.5"/><circle cx="24" cy="24" r="7" fill="#ffb21f"/><circle cx="38" cy="24" r="3.2" fill="#2f86d6"/><circle cx="10" cy="15" r="4.2" fill="#d9a066"/><circle cx="16" cy="40" r="2.6" fill="#d65a31"/></svg>'
+};
+function starsHtml(n, total, cls){ var h = ''; for (var i = 0; i < total; i++) h += '<span class="' + (i < n ? 'on' : '') + '">' + ICON.star + '</span>'; return '<div class="' + (cls || 'stars3') + '">' + h + '</div>'; }
+
+/* ---------- toast & modal ---------- */
+var toastT = 0;
+function toast(msg){ var t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function(){ t.classList.remove('on'); }, 2800); }
+function modal(title, bodyHtml, buttons){
+  $('#mdTitle').textContent = title; $('#mdBody').innerHTML = bodyHtml || '';
+  var b = $('#mdBtns'); b.innerHTML = '';
+  (buttons || [{label:'Tutup'}]).forEach(function(bt){
+    var e = document.createElement('button'); e.className = 'btn ' + (bt.cls || ''); e.textContent = bt.label;
+    e.onclick = function(){ closeModal(); if (bt.fn) bt.fn(); };
+    b.appendChild(e);
+  });
+  $('#modal').classList.add('on');
+}
+function closeModal(){ $('#modal').classList.remove('on'); var img = $('#mdBody img'); if (img && img.dataset.url) { try { URL.revokeObjectURL(img.dataset.url); } catch(e){} } }
+
+/* ---------- suara (TTS) ---------- */
+var Speech = {
+  voice: null, btn: null,
+  init: function(){
+    if (!('speechSynthesis' in window)) return;
+    var self = this;
+    var pick = function(){ try { var vs = speechSynthesis.getVoices() || []; self.voice = vs.filter(function(v){ return /^id([-_]|$)/i.test(v.lang); })[0] || vs.filter(function(v){ return /indonesia/i.test(v.name); })[0] || null; } catch(e){} };
+    pick(); try { speechSynthesis.onvoiceschanged = pick; } catch(e){}
+  },
+  speak: function(text, btn){
+    if (this.btn && this.btn === btn) { this.stop(); return; }
+    this.stop();
+    if (!S.sound) { toast('Suara sedang mati. Nyalakan lewat tombol speaker di kanan atas.'); return; }
+    if (!('speechSynthesis' in window)) { toast('Perangkat ini belum mendukung suara.'); return; }
+    var u = new SpeechSynthesisUtterance(text); u.lang = 'id-ID'; if (this.voice) u.voice = this.voice; u.rate = 0.95;
+    var self = this;
+    if (btn) { this.btn = btn; btn.classList.add('on'); btn.dataset.label = btn.dataset.label || btn.textContent.trim(); btn.innerHTML = ICON.stop + 'Berhenti'; }
+    u.onend = u.onerror = function(){ if (self.btn === btn) self.resetBtn(); };
+    try { speechSynthesis.speak(u); } catch(e){ this.resetBtn(); }
+  },
+  resetBtn: function(){ if (this.btn) { this.btn.classList.remove('on'); this.btn.innerHTML = ICON.speak + esc(this.btn.dataset.label || 'Dengarkan'); } this.btn = null; },
+  stop: function(){ try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} this.resetBtn(); }
+};
+function decorateSpeak(){ $$('.btn.speak').forEach(function(b){ if (!b.dataset.dec) { b.dataset.dec = 1; b.dataset.label = b.textContent.trim(); b.innerHTML = ICON.speak + esc(b.dataset.label); } }); }
+
+/* ---------- efek bunyi ---------- */
+var Sfx = {
+  ctx: null,
+  tone: function(freqs, dur, type, vol){
+    if (!S.sound) return;
+    try {
+      if (!this.ctx) { var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return; this.ctx = new AC(); }
+      var c = this.ctx; if (c.state === 'suspended') c.resume();
+      var t0 = c.currentTime;
+      freqs.forEach(function(f, i){
+        var o = c.createOscillator(), g = c.createGain();
+        o.type = type || 'sine'; o.frequency.value = f;
+        var s = t0 + i * dur * 0.8;
+        g.gain.setValueAtTime(0.0001, s); g.gain.exponentialRampToValueAtTime(vol || 0.18, s + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, s + dur);
+        o.connect(g); g.connect(c.destination); o.start(s); o.stop(s + dur + 0.05);
+      });
+    } catch(e){}
+  },
+  tap: function(){ this.tone([660], 0.09, 'sine', 0.1); },
+  ok: function(){ this.tone([523, 659, 784, 1046], 0.16, 'triangle', 0.18); },
+  bad: function(){ this.tone([220, 180], 0.2, 'square', 0.07); },
+  shot: function(){ this.tone([1400, 900], 0.06, 'square', 0.06); }
+};
+
+/* =====================================================================
+   NAVIGASI
+   ===================================================================== */
+var PARENT = {guide:'home', tp:'guide', menu:'tp', ar:'menu', quiz:'menu', refl:'menu', done:'menu'};
+var TITLES = {home:'', guide:'Petunjuk', tp:'Tujuan Pembelajaran', menu:'Menu Belajar', ar:'Jelajah AR', quiz:'Kuis Tata Surya', refl:'Refleksi', done:'Selesai'};
+var cur = 'home';
+function go(id, opts){
+  Speech.stop(); closeModal();
+  if (cur === 'ar' && id !== 'ar') AR.leave();
+  $$('.screen').forEach(function(s){ s.classList.toggle('on', s.id === 's-' + id); });
+  cur = id;
+  document.body.dataset.screen = id;
+  $('#btnBack').hidden = (id === 'home');
+  $('#topTitle').textContent = TITLES[id] || '';
+  if (id !== 'ar') document.documentElement.style.setProperty('--stripH', '1rem');
+  if (id === 'menu') renderMenu();
+  if (id === 'ar') AR.enter(opts || {});
+  if (id === 'quiz') Quiz.start();
+  if (id === 'refl') renderRefl();
+  if (id === 'done') renderDone();
+  var sc = $('#s-' + id); if (sc) sc.scrollTop = 0;
+}
+function back(){
+  if (cur === 'quiz' && !$('#qMain').hidden && Quiz.ans.some(function(a){ return a != null; })) {
+    modal('Keluar dari kuis?', 'Jawaban yang sudah kamu pilih akan hilang.', [{label:'Tetap di Kuis', cls:'light'}, {label:'Keluar', fn:function(){ go('menu'); }}]);
+    return;
+  }
+  go(PARENT[cur] || 'home');
+}
+
+function renderSoundBtn(){ var b = $('#btnSound'); b.innerHTML = S.sound ? ICON.soundOn : ICON.soundOff; b.setAttribute('aria-label', S.sound ? 'Matikan suara' : 'Nyalakan suara'); }
+
+/* ---------- tujuan ---------- */
+function renderTP(){ $('#tpList').innerHTML = TP.map(function(t, i){ return '<li><b>' + (i + 1) + '</b><span>Murid dapat ' + esc(t.charAt(0).toLowerCase() + t.slice(1)) + '</span></li>'; }).join(''); }
+
+/* ---------- menu ---------- */
+function renderMenu(){
+  var n = learnedCount(), all = OBJECTS.length;
+  $('#progText').textContent = 'Objek dipelajari ' + n + '/' + all;
+  $('#progBar').style.width = (n / all * 100) + '%';
+  $('#metaAR').textContent = n + '/' + all + ' objek ✓';
+  $('#metaMisi').textContent = '★ ' + starSum() + '/' + (MISSIONS.length * 3);
+  var kOpen = n >= all;
+  $('#tileKuis').classList.toggle('locked', !kOpen);
+  $('#kuisDesc').textContent = kOpen ? '10 soal pilihan ganda tentang tata surya.' : 'Terbuka setelah 8 objek dipelajari.';
+  $('#metaKuis').textContent = S.quiz ? ('Nilai terakhir: ' + S.quiz.nilai) : (kOpen ? 'Siap dikerjakan' : n + '/' + all + ' objek');
+  var rOpen = !!S.quiz;
+  $('#tileRefl').classList.toggle('locked', !rOpen);
+  $('#reflDesc').textContent = rOpen ? 'Tulis hal yang kamu pelajari hari ini.' : 'Terbuka setelah kuis dikerjakan.';
+  $('#metaRefl').textContent = (S.refl.a1 && S.refl.a2) ? 'Sudah diisi' : (rOpen ? 'Belum diisi' : 'Terkunci');
+}
+
+/* =====================================================================
+   MESIN 3D (WebGL, tanpa pustaka luar)
+   ===================================================================== */
+var M4 = {
+  id: function(){ return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]); },
+  mul: function(a, b){ var o = new Float32Array(16); for (var c = 0; c < 4; c++) for (var r = 0; r < 4; r++) o[c*4+r] = a[r]*b[c*4] + a[4+r]*b[c*4+1] + a[8+r]*b[c*4+2] + a[12+r]*b[c*4+3]; return o; },
+  chain: function(){ var m = arguments[0]; for (var i = 1; i < arguments.length; i++) m = M4.mul(m, arguments[i]); return m; },
+  persp: function(fovy, asp, n, f){ var t = 1 / Math.tan(fovy / 2), nf = 1 / (n - f); return new Float32Array([t/asp,0,0,0, 0,t,0,0, 0,0,(f+n)*nf,-1, 0,0,2*f*n*nf,0]); },
+  T: function(x, y, z){ var m = M4.id(); m[12] = x; m[13] = y; m[14] = z; return m; },
+  S: function(x, y, z){ var m = M4.id(); m[0] = x; m[5] = (y == null ? x : y); m[10] = (z == null ? x : z); return m; },
+  RX: function(a){ var c = Math.cos(a), s = Math.sin(a); return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]); },
+  RY: function(a){ var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]); },
+  RZ: function(a){ var c = Math.cos(a), s = Math.sin(a); return new Float32Array([c,s,0,0, -s,c,0,0, 0,0,1,0, 0,0,0,1]); },
+  inv: function(a){
+    var o = new Float32Array(16);
+    var a00=a[0],a01=a[1],a02=a[2],a03=a[3],a10=a[4],a11=a[5],a12=a[6],a13=a[7],a20=a[8],a21=a[9],a22=a[10],a23=a[11],a30=a[12],a31=a[13],a32=a[14],a33=a[15];
+    var b00=a00*a11-a01*a10,b01=a00*a12-a02*a10,b02=a00*a13-a03*a10,b03=a01*a12-a02*a11,b04=a01*a13-a03*a11,b05=a02*a13-a03*a12,
+        b06=a20*a31-a21*a30,b07=a20*a32-a22*a30,b08=a20*a33-a23*a30,b09=a21*a32-a22*a31,b10=a21*a33-a23*a31,b11=a22*a33-a23*a32;
+    var det = b00*b11-b01*b10+b02*b09+b03*b08-b04*b07+b05*b06; if (!det) return null; det = 1 / det;
+    o[0]=(a11*b11-a12*b10+a13*b09)*det; o[1]=(a02*b10-a01*b11-a03*b09)*det; o[2]=(a31*b05-a32*b04+a33*b03)*det; o[3]=(a22*b04-a21*b05-a23*b03)*det;
+    o[4]=(a12*b08-a10*b11-a13*b07)*det; o[5]=(a00*b11-a02*b08+a03*b07)*det; o[6]=(a32*b02-a30*b05-a33*b01)*det; o[7]=(a20*b05-a22*b02+a23*b01)*det;
+    o[8]=(a10*b10-a11*b08+a13*b06)*det; o[9]=(a01*b08-a00*b10-a03*b06)*det; o[10]=(a30*b04-a31*b02+a33*b00)*det; o[11]=(a21*b02-a20*b04-a23*b00)*det;
+    o[12]=(a11*b07-a10*b09-a12*b06)*det; o[13]=(a00*b09-a01*b07+a02*b06)*det; o[14]=(a31*b01-a30*b03-a32*b00)*det; o[15]=(a20*b03-a21*b01+a22*b00)*det;
+    return o;
+  },
+  xf: function(m, v){ var x=v[0], y=v[1], z=v[2], w=(v.length > 3 ? v[3] : 1); return [m[0]*x+m[4]*y+m[8]*z+m[12]*w, m[1]*x+m[5]*y+m[9]*z+m[13]*w, m[2]*x+m[6]*y+m[10]*z+m[14]*w, m[3]*x+m[7]*y+m[11]*z+m[15]*w]; }
+};
+function v3sub(a, b){ return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
+function v3dot(a, b){ return a[0]*b[0] + a[1]*b[1] + a[2]*b[2]; }
+function v3norm(a){ var l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0]/l, a[1]/l, a[2]/l]; }
+
+var VS = [
+'attribute vec3 aPos; attribute vec3 aNor; attribute vec2 aUv;',
+'uniform mat4 uModel; uniform mat4 uView; uniform mat4 uProj;',
+'uniform float uBill; uniform float uSize; uniform float uPt;',
+'varying vec3 vNor; varying vec3 vWorld; varying vec3 vObj; varying vec2 vUv;',
+'void main(){',
+'  vUv = aUv; vObj = aPos;',
+'  if (uBill > 0.5) {',
+'    vec4 c = uView * uModel * vec4(0.0, 0.0, 0.0, 1.0);',
+'    float s = length(vec3(uModel[0][0], uModel[0][1], uModel[0][2]));',
+'    vWorld = vec3(0.0); vNor = vec3(0.0, 0.0, 1.0);',
+'    gl_Position = uProj * (c + vec4(aPos.xy * uSize * s, 0.0, 0.0));',
+'  } else {',
+'    vec4 w = uModel * vec4(aPos, 1.0);',
+'    vWorld = w.xyz;',
+'    vNor = normalize((uModel * vec4(aNor, 0.0)).xyz + vec3(0.0, 0.0, 1e-6));',
+'    gl_Position = uProj * uView * w;',
+'  }',
+'  gl_PointSize = uPt;',
+'}'].join('\n');
+
+var FS = [
+'#ifdef GL_FRAGMENT_PRECISION_HIGH',
+'precision highp float;',
+'#else',
+'precision mediump float;',
+'#endif',
+'varying vec3 vNor; varying vec3 vWorld; varying vec3 vObj; varying vec2 vUv;',
+'uniform float uMode, uTime, uLightPt, uAlpha, uHi, uAmb, uRimAmt, uBand, uBandAmt, uSpot, uSeed;',
+'uniform vec3 uColor, uColor2, uColor3, uLight, uCam, uRim;',
+'float hash(vec3 p){ p = fract(p * 0.3183099 + vec3(0.1, 0.2, 0.3)); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }',
+'float noise(vec3 x){ vec3 i = floor(x); vec3 f = fract(x); f = f * f * (3.0 - 2.0 * f);',
+'  float a = hash(i), b = hash(i + vec3(1.0,0.0,0.0)), c = hash(i + vec3(0.0,1.0,0.0)), d = hash(i + vec3(1.0,1.0,0.0));',
+'  float e = hash(i + vec3(0.0,0.0,1.0)), g = hash(i + vec3(1.0,0.0,1.0)), h = hash(i + vec3(0.0,1.0,1.0)), k = hash(i + vec3(1.0,1.0,1.0));',
+'  return mix(mix(mix(a,b,f.x), mix(c,d,f.x), f.y), mix(mix(e,g,f.x), mix(h,k,f.x), f.y), f.z); }',
+'float fbm(vec3 p){ float v = 0.0; float a = 0.5; for (int i = 0; i < 5; i++){ v += a * noise(p); p = p * 2.02 + vec3(1.7, 9.2, 3.1); a *= 0.5; } return v; }',
+'float crater(vec3 p){ vec3 i = floor(p); vec3 f = fract(p); float best = 8.0;',
+'  for (int x = -1; x <= 1; x++){ for (int y = -1; y <= 1; y++){ for (int z = -1; z <= 1; z++){',
+'    vec3 o = vec3(float(x), float(y), float(z));',
+'    vec3 r = o + vec3(hash(i + o), hash(i + o + 11.3), hash(i + o + 27.1)) - f;',
+'    best = min(best, dot(r, r)); } } }',
+'  return sqrt(best); }',
+'void main(){',
+'  vec3 n = normalize(vNor);',
+'  vec3 V = normalize(uCam - vWorld);',
+'  vec3 L = uLightPt > 0.5 ? normalize(uLight - vWorld) : normalize(uLight);',
+'  float nl = dot(n, L); float dif = max(nl, 0.0);',
+'  float ndv = max(dot(n, V), 0.0);',
+'  float rim = pow(1.0 - ndv, 3.0);',
+'  vec3 p = normalize(vObj + vec3(1e-5));',
+'  vec3 col = uColor; float a = uAlpha; float lit = 1.0;',
+'  if (uMode < 0.5) {',
+'    col = uColor;',
+'  } else if (uMode < 1.5) {',
+'    float t = uTime * 0.12;',
+'    float f = fbm(p * 3.2 + vec3(t, -t * 0.7, t * 0.4));',
+'    float g = fbm(p * 9.0 - vec3(t * 1.4, t, -t));',
+'    col = mix(vec3(1.0, 0.42, 0.04), vec3(1.0, 0.86, 0.32), smoothstep(0.25, 0.75, f));',
+'    col += vec3(1.0, 0.95, 0.7) * pow(g, 2.5) * 0.9;',
+'    col *= 0.6 + 0.5 * pow(ndv, 0.5);',
+'    lit = 0.0;',
+'  } else if (uMode < 2.5) {',
+'    float m = fbm(p * 4.0 + uSeed);',
+'    col = mix(uColor2, uColor, smoothstep(0.3, 0.7, m));',
+'    float d1 = crater(p * 5.0 + uSeed);',
+'    float d2 = crater(p * 11.0 + uSeed * 2.0);',
+'    float fl1 = 1.0 - smoothstep(0.22, 0.3, d1);',
+'    float rm1 = smoothstep(0.24, 0.31, d1) * (1.0 - smoothstep(0.31, 0.4, d1));',
+'    float fl2 = 1.0 - smoothstep(0.2, 0.27, d2);',
+'    col *= 1.0 - 0.3 * fl1 - 0.2 * fl2;',
+'    col += 0.12 * rm1;',
+'  } else if (uMode < 3.5) {',
+'    vec3 q = vec3(p.x * 1.6, p.y * 5.0, p.z * 1.6);',
+'    float f = fbm(q + vec3(uTime * 0.04, 0.0, 0.0) + fbm(q * 1.5) * 1.2);',
+'    col = mix(vec3(0.82, 0.6, 0.3), vec3(1.0, 0.93, 0.72), f);',
+'  } else if (uMode < 4.5) {',
+'    float h = fbm(p * 2.1 + vec3(3.1, 1.7, uSeed));',
+'    float land = smoothstep(0.5, 0.53, h);',
+'    vec3 ocean = mix(vec3(0.03, 0.18, 0.5), vec3(0.08, 0.4, 0.78), fbm(p * 6.0));',
+'    vec3 ground = mix(vec3(0.16, 0.5, 0.18), vec3(0.62, 0.52, 0.3), smoothstep(0.45, 0.7, fbm(p * 5.0 + 7.0)));',
+'    col = mix(ocean, ground, land);',
+'    float ice = smoothstep(0.82, 0.87, abs(p.y) + fbm(p * 8.0) * 0.08);',
+'    col = mix(col, vec3(0.95, 0.97, 1.0), ice);',
+'    float c = fbm(p * 3.5 + vec3(uTime * 0.025, 0.0, uTime * 0.01));',
+'    float cloud = smoothstep(0.55, 0.75, c);',
+'    col = mix(col, vec3(1.0), cloud * 0.85);',
+'    float spec = pow(max(dot(reflect(-L, n), V), 0.0), 24.0) * (1.0 - land) * (1.0 - cloud);',
+'    col += vec3(0.55) * spec * dif;',
+'  } else if (uMode < 5.5) {',
+'    float f = fbm(p * 3.0 + 5.0);',
+'    col = mix(vec3(0.48, 0.2, 0.1), vec3(0.86, 0.43, 0.21), smoothstep(0.3, 0.7, f));',
+'    col *= 0.85 + 0.3 * fbm(p * 12.0);',
+'    float cap = smoothstep(0.84, 0.88, abs(p.y) + (fbm(p * 9.0) - 0.5) * 0.04);',
+'    col = mix(col, vec3(0.97, 0.96, 0.94), cap);',
+'  } else if (uMode < 6.5) {',
+'    float w = fbm(p * vec3(2.0, 6.0, 2.0) + vec3(uTime * 0.03, 0.0, 0.0));',
+'    float b = p.y * uBand + (w - 0.5) * 2.2 * uBandAmt;',
+'    float s = 0.5 + 0.5 * sin(b * 3.14159);',
+'    col = mix(uColor, uColor2, s * uBandAmt + (1.0 - uBandAmt) * 0.3);',
+'    col = mix(col, uColor3, smoothstep(0.75, 0.95, sin(b * 1.7 + 1.0) * 0.5 + 0.5) * 0.45 * uBandAmt);',
+'    if (uSpot > 0.5) {',
+'      float lat = asin(clamp(p.y, -1.0, 1.0));',
+'      float lon = atan(p.z, p.x);',
+'      vec2 d = vec2(lon / 0.30, (lat + 0.38) / 0.15);',
+'      float e = dot(d, d);',
+'      float sw = fbm(vec3(d * 1.5, uTime * 0.1));',
+'      float spot = 1.0 - smoothstep(0.55, 1.0, e + (sw - 0.5) * 0.4);',
+'      col = mix(col, mix(vec3(0.72, 0.25, 0.12), vec3(0.9, 0.47, 0.27), sw), spot);',
+'    }',
+'  } else if (uMode < 7.5) {',
+'    float r = vUv.x;',
+'    float f = fbm(vec3(r * 38.0, 0.5, 0.5));',
+'    float f2 = noise(vec3(r * 120.0, 2.0, 2.0));',
+'    col = mix(vec3(0.72, 0.6, 0.42), vec3(0.97, 0.89, 0.7), f);',
+'    a = uAlpha * (0.45 + 0.55 * f) * (0.75 + 0.25 * f2);',
+'    a *= smoothstep(0.0, 0.04, r) * (1.0 - smoothstep(0.93, 1.0, r));',
+'    a *= 1.0 - 0.85 * (1.0 - smoothstep(0.0, 0.025, abs(r - 0.66)));',
+'    col *= 0.75 + 0.35 * abs(dot(n, L));',
+'    lit = 0.0;',
+'  } else if (uMode < 8.5) {',
+'    float d = length(vUv * 2.0 - 1.0);',
+'    a = pow(1.0 - smoothstep(uBand, 1.0, d), 1.6) * uAlpha;',
+'    col = uColor; lit = 0.0;',
+'  } else if (uMode < 9.5) {',
+'    float d = length(vUv * 2.0 - 1.0);',
+'    a = (1.0 - smoothstep(0.0, 1.0, d)) * uAlpha;',
+'    col = vec3(0.0); lit = 0.0;',
+'  } else if (uMode < 10.5) {',
+'    col = uColor; lit = 0.0;',
+'  } else {',
+'    vec2 c2 = gl_PointCoord - 0.5;',
+'    if (dot(c2, c2) > 0.25) discard;',
+'    col = uColor; lit = 0.0;',
+'  }',
+'  if (lit > 0.5) {',
+'    col *= uAmb + (1.0 - uAmb) * dif;',
+'    col += uRim * rim * uRimAmt * (0.25 + 0.75 * smoothstep(-0.2, 0.6, nl));',
+'  }',
+'  col += vec3(1.0, 0.85, 0.25) * uHi * (0.25 + 0.75 * rim);',
+'  gl_FragColor = vec4(col * a, a);',
+'}'].join('\n');
+
+/* tampilan setiap benda langit */
+var BODY = {
+  matahari:{mode:1},
+  merkurius:{mode:2, c1:[0.66,0.62,0.58], c2:[0.4,0.37,0.35], seed:1.3},
+  venus:{mode:3, rim:[1.0,0.85,0.5], rimAmt:0.7},
+  bumi:{mode:4, rim:[0.35,0.65,1.0], rimAmt:0.9, seed:2.0},
+  bulan:{mode:2, c1:[0.82,0.82,0.8], c2:[0.52,0.52,0.52], seed:4.7},
+  mars:{mode:5, rim:[1.0,0.6,0.4], rimAmt:0.3},
+  phobos:{mode:2, c1:[0.58,0.5,0.43], c2:[0.36,0.31,0.27], seed:7.1},
+  deimos:{mode:2, c1:[0.62,0.55,0.47], c2:[0.4,0.35,0.3], seed:9.4},
+  jupiter:{mode:6, c1:[0.93,0.84,0.68], c2:[0.68,0.45,0.28], c3:[0.52,0.3,0.18], band:9.0, bandAmt:1.0, spot:1},
+  saturnus:{mode:6, c1:[0.96,0.88,0.64], c2:[0.82,0.69,0.46], c3:[0.7,0.58,0.38], band:7.0, bandAmt:0.6},
+  uranus:{mode:6, c1:[0.64,0.9,0.93], c2:[0.52,0.8,0.86], c3:[0.45,0.75,0.82], band:5.0, bandAmt:0.25, rim:[0.7,1,1], rimAmt:0.4},
+  neptunus:{mode:6, c1:[0.32,0.5,0.96], c2:[0.2,0.33,0.8], c3:[0.15,0.25,0.65], band:6.0, bandAmt:0.5, rim:[0.5,0.7,1], rimAmt:0.4}
+};
+
+/* adegan (scene) setiap objek AR */
+var SCENES = {
+  tatasurya:{fit:8.0, pitch:0.65, light:'sun', amb:0.34, wide:1, nodes:[
+      {id:'matahari', r:0.8, spin:0.12, label:1},
+      {id:'merkurius', r:0.2, orbit:[1.45, 0.95, 0.3], spin:0.3, label:1},
+      {id:'venus', r:0.28, orbit:[2.0, 0.7, 2.1], spin:-0.2, label:1},
+      {id:'bumi', r:0.3, orbit:[2.6, 0.52, 4.0], spin:0.9, tilt:0.41, label:1},
+      {id:'bulan', r:0.085, orbit:[0.5, 2.0, 0, 'bumi'], spin:0.5},
+      {id:'mars', r:0.24, orbit:[3.2, 0.42, 5.3], spin:0.85, tilt:0.44, label:1},
+      {id:'jupiter', r:0.62, orbit:[4.6, 0.23, 1.0], spin:1.2, label:1},
+      {id:'saturnus', r:0.5, orbit:[5.75, 0.17, 3.2], spin:1.1, tilt:0.47, label:1},
+      {id:'uranus', r:0.38, orbit:[6.75, 0.12, 5.0], spin:0.8, tilt:1.71, label:1},
+      {id:'neptunus', r:0.37, orbit:[7.6, 0.09, 0.4], spin:0.8, tilt:0.49, label:1}],
+    orbits:[1.45, 2.0, 2.6, 3.2, 4.6, 5.75, 6.75, 7.6], belt:[3.62, 3.98],
+    rings:[{at:'saturnus', r1:1.3, r2:2.2, pick:'saturnus'}, {at:'uranus', r1:1.45, r2:1.7, alpha:0.4, pick:'uranus'}],
+    glows:[{at:'matahari', size:2.2, band:0.38, color:[1.0,0.62,0.18], alpha:1.0}, {at:'venus', size:1.3, band:0.74, color:[1,0.86,0.5], alpha:0.5}, {at:'bumi', size:1.3, band:0.74, color:[0.4,0.7,1], alpha:0.55}]},
+  matahari:{fit:1.9, pitch:0.12, amb:0.25, nodes:[{id:'matahari', r:1, spin:0.12, label:1}],
+    glows:[{at:'matahari', size:2.3, band:0.38, color:[1.0,0.6,0.15], alpha:1.0, pick:'korona', pickR:1.9}]},
+  merkurius:{fit:1.2, pitch:0.15, amb:0.22, shadow:1, nodes:[{id:'merkurius', r:1, spin:0.15, label:1}]},
+  venus:{fit:1.35, pitch:0.15, amb:0.22, shadow:1, nodes:[{id:'venus', r:1, spin:-0.1, label:1}],
+    glows:[{at:'venus', size:1.25, band:0.78, color:[1,0.86,0.5], alpha:0.6, pick:'atmosfer-venus', pickR:1.3}]},
+  bumi:{fit:2.25, pitch:0.18, amb:0.2, shadow:1, nodes:[
+      {id:'bumi', r:1, spin:0.3, tilt:0.41, label:1, axis:1.45},
+      {id:'bulan', r:0.27, orbit:[1.95, 0.22, 0.6, 'bumi'], spin:0.22, label:1}],
+    glows:[{at:'bumi', size:1.18, band:0.82, color:[0.4,0.7,1], alpha:0.6}]},
+  mars:{fit:2.05, pitch:0.18, amb:0.22, shadow:1, nodes:[
+      {id:'mars', r:1, spin:0.3, tilt:0.44, label:1},
+      {id:'phobos', r:0.13, sc:[1.35,0.85,1], orbit:[1.45, 0.9, 0, 'mars'], spin:0.9, label:1},
+      {id:'deimos', r:0.1, sc:[1.3,0.9,1], orbit:[1.85, 0.5, 2.5, 'mars'], spin:0.5, label:1}],
+    regions:{mars:'kutub'}},
+  jupiter:{fit:1.2, pitch:0.12, amb:0.22, shadow:1, nodes:[{id:'jupiter', r:1, spin:0.35, label:1}], regions:{jupiter:'spot'}},
+  saturnus:{fit:2.05, pitch:0.32, amb:0.22, shadow:1, nodes:[{id:'saturnus', r:0.9, spin:0.35, tilt:0.47, label:1}],
+    rings:[{at:'saturnus', r1:1.25, r2:2.25, pick:'cincin-saturnus'}]}
+};
+
+var AR = (function(){
+  var canvas = $('#gl'), video = $('#cam'), photo = $('#photoBg'), labelsEl = $('#labels');
+  var gl = null, A = {}, U = {}, MESH = {}, glOk = null, ringCache = {};
+  var running = false, last = 0, T = 0, OT = 0, appear0 = 0;
+  var scene = 'tatasurya', mission = false;
+  var vw = {yaw:0, pitch:0.5, zoom:1, panX:0, panY:0};
+  var bgMode = '3d', stream = null, camBusy = false;
+  var proj = M4.id(), view = M4.id(), D = 6, W = 1, H = 1, dpr = 1, FOV = 0.785;
+  var pickables = [], hi = {node:null, t0:-99}, labelEls = {}, reveal = {id:null, until:0};
+  var showLabels = true, coachT = 0, noticeT = 0, lastSize = '', qScale = 1, slow = 0;
+
+  /* ---------- geometri ---------- */
+  function sphereGeo(seg, rings){
+    var pos = [], nor = [], uv = [], idx = [];
+    for (var r = 0; r <= rings; r++){
+      var v = r / rings, th = v * Math.PI;
+      for (var s = 0; s <= seg; s++){
+        var u = s / seg, ph = u * Math.PI * 2;
+        var x = Math.sin(th) * Math.cos(ph), y = Math.cos(th), z = Math.sin(th) * Math.sin(ph);
+        pos.push(x, y, z); nor.push(x, y, z); uv.push(u, v);
+      }
+    }
+    for (r = 0; r < rings; r++) for (s = 0; s < seg; s++){ var a = r * (seg + 1) + s, b = a + seg + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+    return {pos:pos, nor:nor, uv:uv, idx:idx};
+  }
+  function ringGeo(r1, r2, seg){
+    var pos = [], nor = [], uv = [], idx = [];
+    for (var i = 0; i <= seg; i++){
+      var t = i / seg * Math.PI * 2, c = Math.cos(t), s = Math.sin(t);
+      pos.push(r1 * c, 0, r1 * s, r2 * c, 0, r2 * s); nor.push(0,1,0, 0,1,0); uv.push(0, i / seg, 1, i / seg);
+    }
+    for (i = 0; i < seg; i++){ var a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+    return {pos:pos, nor:nor, uv:uv, idx:idx};
+  }
+  function quadGeo(ground){
+    var pos = ground ? [-1,0,-1, 1,0,-1, 1,0,1, -1,0,1] : [-1,-1,0, 1,-1,0, 1,1,0, -1,1,0];
+    return {pos:pos, nor:[0,0,1, 0,0,1, 0,0,1, 0,0,1], uv:[0,0, 1,0, 1,1, 0,1], idx:[0,1,2, 0,2,3]};
+  }
+  function beltGeo(r1, r2, n){
+    var pos = [], nor = [], uv = [], seed = 7;
+    function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var i = 0; i < n; i++){ var t = rnd() * Math.PI * 2, r = r1 + (r2 - r1) * rnd(); pos.push(r * Math.cos(t), (rnd() - 0.5) * 0.14, r * Math.sin(t)); nor.push(0,1,0); uv.push(0,0); }
+    return {pos:pos, nor:nor, uv:uv, points:true};
+  }
+  function buf(data){ var b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW); return b; }
+  function mesh(g){
+    var m = {pos:buf(g.pos), nor:buf(g.nor), uv:buf(g.uv), prim: g.points ? gl.POINTS : gl.TRIANGLES};
+    if (g.idx){ m.idx = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, m.idx); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(g.idx), gl.STATIC_DRAW); m.count = g.idx.length; }
+    else m.count = g.pos.length / 3;
+    return m;
+  }
+  function ringMesh(r1, r2, seg){ var k = r1.toFixed(3) + '_' + r2.toFixed(3); if (!ringCache[k]) ringCache[k] = mesh(ringGeo(r1, r2, seg || 128)); return ringCache[k]; }
+
+  function initGL(){
+    var o = {alpha:true, antialias:true, preserveDrawingBuffer:true, premultipliedAlpha:true, depth:true};
+    try { gl = canvas.getContext('webgl', o) || canvas.getContext('experimental-webgl', o); } catch(e){ gl = null; }
+    if (!gl) return false;
+    function sh(type, src){ var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.error(gl.getShaderInfoLog(s)); return null; } return s; }
+    var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS); if (!vs || !fs) return false;
+    var p = gl.createProgram(); gl.attachShader(p, vs); gl.attachShader(p, fs); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.error(gl.getProgramInfoLog(p)); return false; }
+    gl.useProgram(p);
+    ['aPos','aNor','aUv'].forEach(function(n){ A[n] = gl.getAttribLocation(p, n); });
+    ['uModel','uView','uProj','uBill','uSize','uPt','uMode','uTime','uLightPt','uAlpha','uHi','uAmb','uRimAmt','uBand','uBandAmt','uSpot','uSeed','uColor','uColor2','uColor3','uLight','uCam','uRim']
+      .forEach(function(n){ U[n] = gl.getUniformLocation(p, n); });
+    MESH.sphere = mesh(sphereGeo(64, 40));
+    MESH.sphereLo = mesh(sphereGeo(20, 12));
+    MESH.quad = mesh(quadGeo(false));
+    MESH.ground = mesh(quadGeo(true));
+    MESH.belt = mesh(beltGeo(3.62, 3.98, 900));
+    gl.enable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE);
+    canvas.addEventListener('webglcontextlost', function(e){ e.preventDefault(); glOk = false; }, false);
+    canvas.addEventListener('webglcontextrestored', function(){ ringCache = {}; glOk = initGL(); }, false);
+    return true;
+  }
+
+  function attr(loc, b, size){ if (loc < 0) return; gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0); }
+  function draw(m, model, p){
+    p = p || {};
+    gl.uniformMatrix4fv(U.uModel, false, model);
+    gl.uniform1f(U.uMode, p.mode || 0);
+    gl.uniform1f(U.uBill, p.bill ? 1 : 0);
+    gl.uniform1f(U.uSize, p.size || 1);
+    gl.uniform1f(U.uPt, p.pt || 1);
+    gl.uniform1f(U.uAlpha, p.alpha == null ? 1 : p.alpha);
+    gl.uniform1f(U.uHi, p.hi || 0);
+    gl.uniform1f(U.uAmb, p.amb == null ? 0.2 : p.amb);
+    gl.uniform1f(U.uRimAmt, p.rimAmt || 0);
+    gl.uniform1f(U.uBand, p.band == null ? 6 : p.band);
+    gl.uniform1f(U.uBandAmt, p.bandAmt == null ? 1 : p.bandAmt);
+    gl.uniform1f(U.uSpot, p.spot || 0);
+    gl.uniform1f(U.uSeed, p.seed || 0);
+    gl.uniform3fv(U.uColor, p.c1 || [1,1,1]);
+    gl.uniform3fv(U.uColor2, p.c2 || [0,0,0]);
+    gl.uniform3fv(U.uColor3, p.c3 || [0,0,0]);
+    gl.uniform3fv(U.uRim, p.rim || [0,0,0]);
+    attr(A.aPos, m.pos, 3); attr(A.aNor, m.nor, 3); attr(A.aUv, m.uv, 2);
+    if (m.idx){ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, m.idx); gl.drawElements(m.prim, m.count, gl.UNSIGNED_SHORT, 0); }
+    else gl.drawArrays(m.prim, 0, m.count);
+  }
+
+  /* ---------- ukuran & kamera virtual ---------- */
+  function insets(){
+    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    var top = 3.6 * rem, left = 0, right = W, side = false;
+    var strip = $('#strip'), stripH = (!mission && strip.offsetHeight) ? strip.offsetHeight : 0.5 * rem, bottom = stripH;
+    var land = W > H * 1.15;
+    var mb = $('#missionBar');
+    if (mission && !mb.hidden){
+      var r = mb.getBoundingClientRect();
+      if (land) { left = Math.min(W * 0.5, r.right + 0.5 * rem); side = true; }
+      else top = Math.max(top, r.bottom + 0.3 * rem);
+    }
+    var sh = $('#infoSheet');
+    if (sh.classList.contains('on')){
+      if (window.innerWidth >= 1100 && land) { right = Math.max(left + W * 0.3, W - 5.6 * rem - sh.offsetWidth - 0.6 * rem); side = true; }
+      else bottom = Math.min(H * 0.62, stripH + 0.5 * rem + sh.offsetHeight + 0.4 * rem);
+    }
+    return {top:top, bottom:bottom, left:left, right:right, side:side};
+  }
+  function resize(){
+    var r = canvas.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    dpr = Math.min(window.devicePixelRatio || 1, 2) * qScale;
+    if (W * H * dpr * dpr > 2600000) dpr = Math.sqrt(2600000 / (W * H));
+    var w = Math.round(W * dpr), h = Math.round(H * dpr);
+    if (canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+    document.documentElement.style.setProperty('--stripH', (mission ? 0 : $('#strip').offsetHeight) + 'px');
+  }
+  var camS = {D:0, cy:0, cx:0, snap:true};
+  function setupCamera(dt){
+    var sc = SCENES[scene], ins = insets(), asp = W / H, f = 1 / Math.tan(FOV / 2);
+    var usable = Math.max(H * 0.3, H - ins.top - ins.bottom), usableW = Math.max(W * 0.3, ins.right - ins.left);
+    var Dv = sc.fit * f * H / usable * 1.08;
+    var hf = ins.side ? 0.9 : (sc.wide && W < H ? 0.98 : (W > 700 ? 0.8 : 0.86));
+    var Dh = sc.fit * f / (asp * (usableW / W) * hf) * 1.04;
+    var Dt = Math.max(Dv, Dh, sc.fit * 1.6);
+    var cy = 1 - 2 * (ins.top + usable / 2) / H, cx = ins.side ? (2 * ((ins.left + ins.right) / 2) / W - 1) : 0;
+    if (camS.snap){ camS = {D:Dt, cy:cy, cx:cx, snap:false}; }
+    else { var k = Math.min(1, (dt || 0.016) * 7); camS.D += (Dt - camS.D) * k; camS.cy += (cy - camS.cy) * k; camS.cx += (cx - camS.cx) * k; }
+    D = camS.D;
+    proj = M4.persp(FOV, asp, 0.05, D * 4 + 60);
+    proj[8] = -camS.cx; proj[9] = -camS.cy;
+    view = M4.T(0, 0, -D);
+  }
+
+  /* ---------- adegan ---------- */
+  function ease(x){ var c1 = 1.70158, c3 = c1 + 1; x = Math.min(1, Math.max(0, x)); return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function groupMatrix(){
+    var z = vw.zoom * ease((T - appear0) / 0.75);
+    return M4.chain(M4.T(vw.panX, vw.panY, 0), M4.S(z), M4.RX(vw.pitch), M4.RY(vw.yaw));
+  }
+  function nodeBase(sc, node, cache){
+    if (cache[node.id]) return cache[node.id];
+    var p = [0, 0, 0];
+    if (node.orbit){
+      var o = node.orbit, ang = o[2] + OT * o[1], c = [0, 0, 0];
+      if (o[3]) { var par = sc.nodes.filter(function(n){ return n.id === o[3]; })[0]; c = nodeBase(sc, par, cache); }
+      p = [c[0] + o[0] * Math.cos(ang), c[1], c[2] - o[0] * Math.sin(ang)];
+    }
+    cache[node.id] = p; return p;
+  }
+
+  function frame(ts){
+    if (!running) return;
+    requestAnimationFrame(frame);
+    var dt = Math.min(0.05, Math.max(0, (ts - last) / 1000)); last = ts; T += dt; OT += dt * (mission ? 0.3 : 0.6);
+    if (dt > 0.045) slow++; else if (slow > 0) slow--;
+    if (slow > 24 && qScale > 0.5){ qScale *= 0.8; slow = 0; lastSize = ''; }
+    var sz = canvas.clientWidth + 'x' + canvas.clientHeight + 'x' + (window.devicePixelRatio || 1) + (mission ? 'm' : '');
+    if (sz !== lastSize){ lastSize = sz; resize(); camS.snap = true; measureLabels(); }
+    if (!glOk) return;
+    setupCamera(dt);
+    render();
+    updateLabels();
+  }
+
+  function render(){
+    var sc = SCENES[scene];
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.uniformMatrix4fv(U.uView, false, view);
+    gl.uniformMatrix4fv(U.uProj, false, proj);
+    gl.uniform1f(U.uTime, T);
+    gl.uniform3fv(U.uCam, [0, 0, D]);
+    var G = groupMatrix(), gz = vw.zoom * ease((T - appear0) / 0.75);
+    var cache = {}, world = {};
+    if (sc.light === 'sun'){ var sp = M4.xf(G, [0, 0, 0, 1]); gl.uniform3fv(U.uLight, [sp[0], sp[1], sp[2]]); gl.uniform1f(U.uLightPt, 1); }
+    else { gl.uniform3fv(U.uLight, [-0.55, 0.5, 0.68]); gl.uniform1f(U.uLightPt, 0); }
+    pickables = [];
+    var hiAmt = function(id){ if (hi.node !== id) return 0; var k = T - hi.t0; return k > 1.6 ? 0 : (1 - k / 1.6) * (0.55 + 0.45 * Math.sin(k * 14)); };
+
+    /* benda padat */
+    gl.disable(gl.BLEND); gl.depthMask(true);
+    sc.nodes.forEach(function(nd){
+      var b = nodeBase(sc, nd, cache), sc3 = nd.sc || [1,1,1];
+      var local = M4.chain(M4.T(b[0], b[1], b[2]), M4.RZ(nd.tilt || 0), M4.RY(T * (nd.spin || 0)));
+      var Wm = M4.mul(G, M4.mul(local, M4.S(nd.r * sc3[0], nd.r * sc3[1], nd.r * sc3[2])));
+      var c = M4.xf(G, [b[0], b[1], b[2], 1]);
+      world[nd.id] = {m:Wm, local:M4.mul(G, local), c:[c[0], c[1], c[2]], r:nd.r * gz, node:nd};
+      var bp = BODY[nd.id] || {mode:0};
+      draw(MESH.sphere, Wm, {mode:bp.mode, c1:bp.c1, c2:bp.c2, c3:bp.c3, rim:bp.rim, rimAmt:bp.rimAmt, band:bp.band, bandAmt:bp.bandAmt, spot:bp.spot, seed:bp.seed, amb:sc.amb, hi:hiAmt(nd.id)});
+      if (!(mission && nd.id === 'bulan')) pickables.push({type:'sphere', id:nd.id, node:nd.id, c:world[nd.id].c, r:world[nd.id].r, m:Wm, prio:0});
+      if (nd.axis){
+        var am = M4.mul(G, M4.chain(M4.T(b[0], b[1], b[2]), M4.RZ(nd.tilt || 0), M4.S(0.022 * nd.r, nd.axis * nd.r, 0.022 * nd.r)));
+        draw(MESH.sphereLo, am, {mode:0, c1:[1,1,1], amb:0.85});
+      }
+    });
+
+    /* benda transparan */
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.depthMask(false);
+    if (sc.shadow){
+      var main = sc.nodes[0], sm = M4.chain(M4.T(vw.panX, vw.panY, 0), M4.S(gz), M4.RX(SCENES[scene].pitch), M4.T(0, -main.r * 1.32, 0), M4.S(main.r * 1.25, 1, main.r * 1.25));
+      draw(MESH.ground, sm, {mode:9, alpha:bgMode === '3d' ? 0.45 : 0.6});
+    }
+    if (sc.orbits){
+      sc.orbits.forEach(function(r){ draw(ringMesh(r - 0.018, r + 0.018, 180), G, {mode:10, c1:[0.75,0.8,1], alpha:0.32}); });
+    }
+    if (sc.belt){
+      draw(MESH.belt, M4.mul(G, M4.RY(T * 0.05)), {mode:11, c1:[0.78,0.7,0.6], alpha:1, pt:Math.max(1.5, 2.2 * dpr * Math.sqrt(gz))});
+      pickables.push({type:'belt', id:'sabuk-asteroid', m:G, r1:sc.belt[0], r2:sc.belt[1], prio:2});
+    }
+    (sc.rings || []).forEach(function(rg){
+      var w = world[rg.at]; if (!w) return;
+      var rm = M4.mul(w.local, M4.S(w.node.r));
+      draw(ringMesh(rg.r1, rg.r2, 160), rm, {mode:7, alpha:rg.alpha == null ? 0.95 : rg.alpha, hi:(rg.pick === 'cincin-saturnus' ? hiAmt('ring:' + rg.at) : 0)});
+      pickables.push({type:'ring', id:rg.pick || rg.at, node:(rg.pick === 'cincin-saturnus' ? 'ring:' + rg.at : rg.at), m:rm, r1:rg.r1, r2:rg.r2, prio:0});
+    });
+    (sc.glows || []).forEach(function(g){
+      var w = world[g.at]; if (!w) return;
+      draw(MESH.quad, M4.mul(G, M4.mul(M4.T(w.node.orbit ? nodeBase(sc, w.node, cache)[0] : 0, 0, w.node.orbit ? nodeBase(sc, w.node, cache)[2] : 0), M4.S(w.node.r))), {mode:8, bill:1, size:g.size, band:g.band, c1:g.color, alpha:g.alpha});
+      if (g.pick) pickables.push({type:'sphere', id:g.pick, node:g.at, c:w.c, r:w.r * g.pickR, m:w.m, prio:1});
+    });
+    gl.depthMask(true);
+    world.__G = G; lastWorld = world;
+  }
+  var lastWorld = {};
+
+  /* ---------- label ---------- */
+  function project(pt){ var c = M4.xf(proj, M4.xf(view, [pt[0], pt[1], pt[2], 1])); if (c[3] <= 0.0001) return null; return {x:(c[0] / c[3] + 1) / 2 * W, y:(1 - c[1] / c[3]) / 2 * H, w:c[3]}; }
+  function buildLabels(){
+    labelsEl.innerHTML = ''; labelEls = {};
+    SCENES[scene].nodes.forEach(function(nd){
+      if (!nd.label && scene !== 'tatasurya') return;
+      var e = document.createElement('div'); e.className = 'lbl'; e.textContent = PARTS[nd.id] ? PARTS[nd.id].nama : nd.id;
+      labelsEl.appendChild(e); labelEls[nd.id] = e;
+    });
+  }
+  function measureLabels(){ Object.keys(labelEls).forEach(function(id){ var e = labelEls[id], d = e.style.display; e.style.display = 'block'; e._w = e.offsetWidth; e._h = e.offsetHeight; e.style.display = d; }); }
+  function updateLabels(){
+    var f = 1 / Math.tan(FOV / 2), items = [];
+    Object.keys(labelEls).forEach(function(id){
+      var e = labelEls[id], w = lastWorld[id];
+      var nd = w && w.node;
+      var show = w && (mission ? (reveal.id === id && T < reveal.until) : ((nd.label || false) && showLabels) || (hi.node === id && T - hi.t0 < 2.5));
+      if (!show){ e.style.display = 'none'; return; }
+      var p = project(w.c); if (!p){ e.style.display = 'none'; return; }
+      var rpx = w.r * f / p.w * H / 2;
+      if (!e._w) { e.style.display = 'block'; e._w = e.offsetWidth; e._h = e.offsetHeight; }
+      items.push({e:e, id:id, x:p.x, y:p.y - rpx - 5, w:e._w || 60, h:e._h || 20});
+    });
+    items.sort(function(a, b){ return b.y - a.y; });
+    var placed = [];
+    items.forEach(function(it){
+      for (var k = 0; k < 12; k++){
+        var hit = null;
+        for (var j = 0; j < placed.length; j++){ var o = placed[j]; if (Math.abs(o.x - it.x) < (o.w + it.w) / 2 + 3 && Math.abs(o.y - it.y) < (o.h + it.h) / 2 + 1){ hit = o; break; } }
+        if (!hit) break;
+        it.y = hit.y - hit.h - 2;
+      }
+      placed.push(it);
+      it.e.style.display = 'block';
+      it.e.classList.toggle('hi', hi.node === it.id && T - hi.t0 < 2.5);
+      it.e.style.transform = 'translate(' + (it.x - it.w / 2).toFixed(1) + 'px,' + (it.y - it.h).toFixed(1) + 'px)';
+    });
+  }
+
+  /* ---------- mengetuk objek (raycast) ---------- */
+  function pick(px, py){
+    if (!glOk) return null;
+    var nx = px / W * 2 - 1, ny = 1 - py / H * 2;
+    var inv = M4.inv(M4.mul(proj, view)); if (!inv) return null;
+    var a = M4.xf(inv, [nx, ny, -1, 1]), b = M4.xf(inv, [nx, ny, 1, 1]);
+    var p0 = [a[0] / a[3], a[1] / a[3], a[2] / a[3]], p1 = [b[0] / b[3], b[1] / b[3], b[2] / b[3]];
+    var dir = v3norm(v3sub(p1, p0));
+    var f = 1 / Math.tan(FOV / 2), best = null;
+    pickables.forEach(function(pk){
+      var t = null, part = pk.id, miss = 0;
+      if (pk.type === 'sphere'){
+        var depth = Math.max(0.1, D - pk.c[2]), wpp = 2 * depth / (f * H);
+        var minR = 24 * wpp;
+        var R = pk.prio === 1 ? pk.r : Math.max(pk.r * 1.05, minR);
+        var oc = v3sub(p0, pk.c), bb = v3dot(oc, dir), cc = v3dot(oc, oc) - R * R, h = bb * bb - cc;
+        if (h < 0) return;
+        t = -bb - Math.sqrt(h);
+        var perp = Math.sqrt(Math.max(0, v3dot(oc, oc) - bb * bb));
+        if (pk.prio === 0 && perp > pk.r) miss = 1e3 + perp / wpp;
+        if (pk.prio === 0 && SCENES[scene].regions && SCENES[scene].regions[pk.id]){
+          var cr = v3dot(oc, oc) - pk.r * pk.r, hr = bb * bb - cr;
+          if (hr >= 0){
+            var tr = -bb - Math.sqrt(hr), hp = [p0[0] + dir[0] * tr, p0[1] + dir[1] * tr, p0[2] + dir[2] * tr];
+            var im = M4.inv(pk.m), lp = im ? v3norm(M4.xf(im, [hp[0], hp[1], hp[2], 1])) : [0,0,0];
+            part = regionPart(pk.id, lp);
+          }
+        }
+      } else {
+        var imr = M4.inv(pk.m); if (!imr) return;
+        var lo = M4.xf(imr, [p0[0], p0[1], p0[2], 1]), ld = M4.xf(imr, [dir[0], dir[1], dir[2], 0]);
+        if (Math.abs(ld[1]) < 1e-6) return;
+        var tl = -lo[1] / ld[1]; if (tl < 0) return;
+        var hx = lo[0] + ld[0] * tl, hz = lo[2] + ld[2] * tl, rr = Math.hypot(hx, hz);
+        if (rr < pk.r1 - (pk.type === 'belt' ? 0.2 : 0) || rr > pk.r2 + (pk.type === 'belt' ? 0.2 : 0)) return;
+        var wp = M4.xf(pk.m, [hx, 0, hz, 1]); t = Math.hypot(wp[0] - p0[0], wp[1] - p0[1], wp[2] - p0[2]);
+      }
+      if (t == null || t < 0) return;
+      var score = pk.prio * 1e6 + miss + t;
+      if (!best || score < best.score) best = {score:score, part:part, node:pk.node || pk.id};
+    });
+    return best;
+  }
+  function regionPart(id, lp){
+    if (id === 'mars' && Math.abs(lp[1]) > 0.84) return 'kutub-es-mars';
+    if (id === 'jupiter'){ var lat = Math.asin(Math.max(-1, Math.min(1, lp[1]))), lon = Math.atan2(lp[2], lp[0]); var e = Math.pow(lon / 0.3, 2) + Math.pow((lat + 0.38) / 0.15, 2); if (e < 1.3) return 'bintik-merah'; }
+    return id;
+  }
+
+  /* ---------- gestur sentuh / mouse ---------- */
+  var ptrs = {}, gesture = null;
+  function ptrList(){ return Object.keys(ptrs).map(function(k){ return ptrs[k]; }); }
+  canvas.addEventListener('pointerdown', function(e){
+    try { canvas.setPointerCapture(e.pointerId); } catch(err){}
+    var r = canvas.getBoundingClientRect();
+    ptrs[e.pointerId] = {x:e.clientX - r.left, y:e.clientY - r.top, btn:e.button, shift:e.shiftKey};
+    var l = ptrList();
+    if (l.length === 1) gesture = {tap:true, t0:e.timeStamp || performance.now(), x0:l[0].x, y0:l[0].y};
+    else if (gesture) gesture.tap = false;
+    if (l.length === 2 && gesture) gesture.pinch = {d:Math.hypot(l[0].x - l[1].x, l[0].y - l[1].y), mx:(l[0].x + l[1].x) / 2, my:(l[0].y + l[1].y) / 2};
+  });
+  canvas.addEventListener('pointermove', function(e){
+    var p = ptrs[e.pointerId]; if (!p) return;
+    var r = canvas.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, dx = x - p.x, dy = y - p.y;
+    p.x = x; p.y = y;
+    var l = ptrList();
+    if (gesture && gesture.tap && Math.hypot(x - gesture.x0, y - gesture.y0) > 10) gesture.tap = false;
+    var wpp = 2 * D / ((1 / Math.tan(FOV / 2)) * H);
+    if (l.length === 1){
+      if (p.btn === 2 || p.shift){ vw.panX += dx * wpp; vw.panY -= dy * wpp; }
+      else { vw.yaw += dx * 0.009; vw.pitch = Math.max(-1.45, Math.min(1.45, vw.pitch + dy * 0.009)); }
+    } else if (l.length >= 2 && gesture && gesture.pinch){
+      var d = Math.hypot(l[0].x - l[1].x, l[0].y - l[1].y), mx = (l[0].x + l[1].x) / 2, my = (l[0].y + l[1].y) / 2;
+      if (gesture.pinch.d > 0) setZoom(vw.zoom * d / gesture.pinch.d);
+      vw.panX += (mx - gesture.pinch.mx) * wpp; vw.panY -= (my - gesture.pinch.my) * wpp;
+      gesture.pinch = {d:d, mx:mx, my:my};
+    }
+  });
+  function endPtr(e){
+    var p = ptrs[e.pointerId]; if (!p) return;
+    delete ptrs[e.pointerId];
+    var l = ptrList();
+    if (l.length === 0){
+      if (gesture && gesture.tap && (e.timeStamp || performance.now()) - gesture.t0 < 600 && e.type === 'pointerup') handleTap(p.x, p.y);
+      gesture = null;
+    } else if (l.length === 1 && gesture){ gesture.pinch = null; }
+  }
+  canvas.addEventListener('pointerup', endPtr);
+  canvas.addEventListener('pointercancel', endPtr);
+  canvas.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  canvas.addEventListener('wheel', function(e){ e.preventDefault(); setZoom(vw.zoom * Math.exp(-e.deltaY * 0.0012)); }, {passive:false});
+  function setZoom(z){ vw.zoom = Math.max(0.35, Math.min(scene === 'tatasurya' ? 7 : 4, z)); }
+
+  function handleTap(x, y){
+    var r = pick(x, y);
+    if (!r) return;
+    $('#coach').hidden = true;
+    hi = {node:r.node, t0:T};
+    if (mission){ reveal = {id:r.node, until:T + 2.5}; Mission.check(r.part); }
+    else { Sfx.tap(); openInfo(r.part); }
+  }
+
+  /* ---------- kartu info ---------- */
+  var infoPart = null;
+  function openInfo(part){
+    var d = PARTS[part]; if (!d) return;
+    Speech.stop();
+    infoPart = part;
+    $('#infoTag').textContent = d.jenis;
+    $('#infoTitle').textContent = d.nama;
+    $('#infoFacts').innerHTML = d.fakta.map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('');
+    $('#infoSheet').classList.add('on');
+    $('#infoSheet').scrollTop = 0;
+    markLearned(scene);
+  }
+  function closeInfo(){ Speech.stop(); $('#infoSheet').classList.remove('on'); infoPart = null; }
+  function infoText(){ var d = PARTS[infoPart]; return d ? (d.nama + '. ' + d.fakta.join(' ')) : ''; }
+
+  function markLearned(objId){
+    if (S.learned.indexOf(objId) >= 0) return;
+    S.learned.push(objId); save(); renderStrip();
+    var o = OBJECTS.filter(function(x){ return x.id === objId; })[0];
+    var n = learnedCount();
+    toast('✓ ' + (o ? o.nama : objId) + ' dipelajari (' + n + '/' + OBJECTS.length + ')');
+    if (n === OBJECTS.length){
+      setTimeout(function(){ Sfx.ok(); modal('Semua objek sudah dipelajari!', starsHtml(3, 3) + '<p>Kamu sudah mengamati 8 objek. Kuis sekarang terbuka.</p>', [{label:'Tetap Menjelajah', cls:'light'}, {label:'Mulai Kuis', fn:function(){ go('quiz'); }}]); }, 900);
+    }
+  }
+
+  /* ---------- deretan kartu objek ---------- */
+  function renderStrip(){
+    var s = $('#strip');
+    s.innerHTML = OBJECTS.map(function(o){
+      var th = o.id === 'tatasurya' ? '<span class="th th-tatasurya">' + ICON.solar + '</span>' : '<span class="th th-' + o.id + '"></span>';
+      return '<button class="ocard' + (o.id === scene ? ' active' : '') + (S.learned.indexOf(o.id) >= 0 ? ' done' : '') + '" data-obj="' + o.id + '"><span class="chk">✓</span>' + th + '<span>' + esc(o.nama) + '</span></button>';
+    }).join('');
+  }
+  $('#strip').addEventListener('click', function(e){
+    var b = e.target.closest('.ocard'); if (!b) return;
+    Sfx.tap(); loadScene(b.dataset.obj);
+    try { b.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); } catch(err){}
+  });
+
+  function loadScene(id){
+    scene = id; document.body.dataset.scene = id;
+    var sc = SCENES[id];
+    vw = {yaw:id === 'saturnus' ? -0.35 : 0, pitch:sc.pitch, zoom:1, panX:0, panY:0};
+    appear0 = T; hi = {node:null, t0:-99}; reveal = {id:null, until:0};
+    closeInfo(); buildLabels(); renderStrip(); lastSize = '';
+    $('#aboutBtn').hidden = (id !== 'tatasurya' || mission);
+    var o = OBJECTS.filter(function(x){ return x.id === id; })[0];
+    $('#topTitle').textContent = mission ? 'Misi AR' : ('Jelajah AR · ' + (o ? o.nama : ''));
+    if (!mission){
+      $('#coach').hidden = false; clearTimeout(coachT);
+      coachT = setTimeout(function(){ $('#coach').hidden = true; }, 5000);
+    }
+  }
+  function resetView(){ var sc = SCENES[scene]; vw = {yaw:scene === 'saturnus' ? -0.35 : 0, pitch:sc.pitch, zoom:1, panX:0, panY:0}; appear0 = T; }
+
+  /* ---------- latar: kamera / 3D / foto ---------- */
+  function setBg(mode){
+    bgMode = mode;
+    document.body.classList.remove('bg-camera', 'bg-photo', 'bg-3d');
+    document.body.classList.add('bg-' + (mode === 'camera' ? 'camera' : mode === 'photo' ? 'photo' : '3d'));
+    var pill = $('#modePill');
+    pill.className = 'pill ' + (mode === 'camera' ? 'cam' : mode === 'photo' ? 'photo' : 'd3');
+    pill.querySelector('span').textContent = mode === 'camera' ? 'Mode AR Kamera' : mode === 'photo' ? 'Mode AR Foto' : 'Mode 3D';
+    var t = $('#tCam');
+    t.innerHTML = (mode === 'camera' ? ICON.cube + '<span>Mode 3D</span>' : ICON.cam + '<span>Kamera</span>');
+    t.setAttribute('aria-label', mode === 'camera' ? 'Matikan kamera, pindah ke Mode 3D' : 'Nyalakan kamera');
+  }
+  function stopCam(){ if (stream){ stream.getTracks().forEach(function(t){ try { t.stop(); } catch(e){} }); stream = null; } try { video.srcObject = null; } catch(e){} }
+  function camError(e){
+    var name = (e && e.name) || '';
+    var msg = 'Kamera tidak bisa dinyalakan.';
+    if (name === 'NotAllowedError' || name === 'SecurityError') msg = 'Kamera tidak diizinkan di halaman ini.';
+    else if (name === 'NotFoundError' || name === 'OverconstrainedError' || name === 'DevicesNotFoundError') msg = 'Kamera tidak ditemukan pada perangkat ini.';
+    else if (name === 'NotReadableError' || name === 'TrackStartError') msg = 'Kamera sedang dipakai aplikasi lain.';
+    else if (name === 'NoSupport') msg = 'Browser ini tidak mendukung kamera.';
+    return msg;
+  }
+  function showNotice(msg){
+    $('#nTitle').textContent = 'Mode 3D aktif';
+    $('#nMsg').textContent = msg + ' Objek tetap bisa diputar, diperbesar, dan diketuk.';
+    $('#nTip').textContent = 'Tip guru: kamera berfungsi jika file HTML ini dibuka langsung di Chrome.';
+    $('#notice').hidden = false;
+    clearTimeout(noticeT); noticeT = setTimeout(function(){ $('#notice').hidden = true; }, 9000);
+  }
+  function startCam(){
+    if (camBusy) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ setBg(bgMode === 'photo' ? 'photo' : '3d'); showNotice(camError({name:'NoSupport'})); return; }
+    camBusy = true;
+    var pill = $('#modePill'); pill.className = 'pill'; pill.querySelector('span').textContent = 'Menyalakan kamera…';
+    var usedFallback = false;
+    var gum = function(c){ return navigator.mediaDevices.getUserMedia(c); };
+    gum({audio:false, video:{facingMode:{exact:'environment'}, width:{ideal:1280}, height:{ideal:720}}})
+      .catch(function(e){
+        if (e && (e.name === 'NotAllowedError' || e.name === 'SecurityError')) throw e;
+        usedFallback = true;
+        return gum({audio:false, video:{width:{ideal:1280}, height:{ideal:720}}});
+      })
+      .then(function(s){
+        camBusy = false;
+        if (!running){ s.getTracks().forEach(function(t){ t.stop(); }); return; }
+        stopCam(); stream = s;
+        video.srcObject = s; video.muted = true; video.setAttribute('playsinline', '');
+        var pr = video.play(); if (pr && pr.catch) pr.catch(function(){});
+        var st = {}; try { st = s.getVideoTracks()[0].getSettings() || {}; } catch(e){}
+        var mirror = st.facingMode ? st.facingMode === 'user' : usedFallback;
+        video.classList.toggle('mirror', !!mirror); video.dataset.mirror = mirror ? '1' : '';
+        $('#notice').hidden = true; setBg('camera'); S.camPref = true; save();
+      })
+      .catch(function(e){
+        camBusy = false;
+        setBg(bgMode === 'photo' ? 'photo' : '3d');
+        showNotice(camError(e));
+      });
+  }
+  $('#tCam').addEventListener('click', function(){
+    Sfx.tap();
+    if (bgMode === 'camera'){ stopCam(); setBg('3d'); S.camPref = false; save(); toast('Mode 3D aktif. Kamera dimatikan.'); }
+    else startCam();
+  });
+  $('#nRetry').addEventListener('click', function(){ $('#notice').hidden = true; startCam(); });
+  $('#nClose').addEventListener('click', function(){ $('#notice').hidden = true; });
+  function choosePhoto(){ $('#photoInput').value = ''; $('#photoInput').click(); }
+  $('#nPhoto').addEventListener('click', function(){ $('#notice').hidden = true; choosePhoto(); });
+  $('#tPhotoBg').addEventListener('click', function(){ Sfx.tap(); choosePhoto(); });
+  $('#photoInput').addEventListener('change', function(){
+    var f = this.files && this.files[0]; if (!f) return;
+    if (photo.dataset.url){ try { URL.revokeObjectURL(photo.dataset.url); } catch(e){} }
+    var url = URL.createObjectURL(f); photo.dataset.url = url; photo.src = url;
+    photo.onload = function(){ stopCam(); setBg('photo'); toast('Foto ruangan dipakai sebagai latar.'); };
+  });
+  $('#tReset').addEventListener('click', function(){ Sfx.tap(); resetView(); });
+  $('#tLabel').addEventListener('click', function(){ Sfx.tap(); showLabels = !showLabels; this.classList.toggle('on', showLabels); toast(showLabels ? 'Label nama ditampilkan.' : 'Label nama disembunyikan.'); });
+  $('#infoClose').addEventListener('click', closeInfo);
+  $('#infoSpeak').addEventListener('click', function(){ Speech.speak(infoText(), this); });
+  $('#aboutBtn').addEventListener('click', function(){ Sfx.tap(); openInfo('tatasurya-info'); });
+
+  /* ---------- ambil foto ---------- */
+  var dlNS = null, dlTried = false;
+  function getDownloads(){
+    if (dlTried) return Promise.resolve(dlNS);
+    if (!window.claude || typeof window.claude.use !== 'function') { dlTried = true; return Promise.resolve(null); }
+    return Promise.resolve(window.claude.use('downloads')).then(function(ns){ dlTried = true; dlNS = ns || null; return dlNS; }).catch(function(){ dlTried = true; return null; });
+  }
+  function drawCover(ctx, src, sw, sh, w, h, mirror){
+    var s = Math.max(w / sw, h / sh), dw = sw * s, dh = sh * s, dx = (w - dw) / 2, dy = (h - dh) / 2;
+    ctx.save(); if (mirror){ ctx.translate(w, 0); ctx.scale(-1, 1); } ctx.drawImage(src, dx, dy, dw, dh); ctx.restore();
+  }
+  function takePhoto(){
+    if (!glOk){ toast('Tampilan 3D belum siap.'); return; }
+    Sfx.shot();
+    var fl = $('#flash'); fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
+    render();
+    var w = canvas.width, h = canvas.height, c = document.createElement('canvas'); c.width = w; c.height = h;
+    var x = c.getContext('2d');
+    if (bgMode === 'camera' && video.videoWidth){ drawCover(x, video, video.videoWidth, video.videoHeight, w, h, !!video.dataset.mirror); }
+    else if (bgMode === 'photo' && photo.naturalWidth){ drawCover(x, photo, photo.naturalWidth, photo.naturalHeight, w, h, false); }
+    else {
+      var g = x.createRadialGradient(w / 2, h * 0.38, 0, w / 2, h * 0.38, Math.max(w, h) * 0.75);
+      g.addColorStop(0, '#2a3384'); g.addColorStop(0.55, '#111650'); g.addColorStop(1, '#070a24');
+      x.fillStyle = g; x.fillRect(0, 0, w, h);
+      x.fillStyle = 'rgba(255,255,255,.8)';
+      for (var i = 0; i < 220; i++){ var sx = (Math.sin(i * 91.7) * 0.5 + 0.5) * w, sy = (Math.sin(i * 47.3 + 2) * 0.5 + 0.5) * h; x.fillRect(sx, sy, 1.6 * dpr, 1.6 * dpr); }
+    }
+    x.drawImage(canvas, 0, 0);
+    var o = OBJECTS.filter(function(q){ return q.id === scene; })[0];
+    var fs = Math.round(Math.max(14, Math.min(w, h) * 0.032)), pad = fs * 0.7;
+    var txt = (o ? o.nama : 'Tata Surya') + ' · MPI AR Tata Surya · SD Negeri 1 Ardimulyo';
+    x.font = '700 ' + fs + 'px "Baloo 2", "Segoe UI", sans-serif';
+    var tw = x.measureText(txt).width;
+    x.fillStyle = 'rgba(10,14,46,.75)';
+    var bx = pad, by = h - pad - fs * 1.6, bw = tw + fs * 1.2, bh = fs * 1.6, rr = bh / 2;
+    x.beginPath(); x.moveTo(bx + rr, by); x.lineTo(bx + bw - rr, by); x.arc(bx + bw - rr, by + rr, rr, -Math.PI / 2, Math.PI / 2); x.lineTo(bx + rr, by + bh); x.arc(bx + rr, by + rr, rr, Math.PI / 2, Math.PI * 1.5); x.fill();
+    x.fillStyle = '#fff'; x.textBaseline = 'middle'; x.fillText(txt, bx + fs * 0.6, by + bh / 2 + 1);
+    c.toBlob(function(blob){
+      if (!blob){ toast('Foto gagal dibuat.'); return; }
+      var url = URL.createObjectURL(blob);
+      var name = 'foto-ar-' + scene + '-' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-') + '.jpg';
+      modal('Foto AR-mu', '<img alt="Foto AR" src="' + url + '" data-url="' + url + '"><p style="margin:.6rem 0 0;font-size:.85rem">Jika tombol Simpan tidak berfungsi, tekan lama gambar lalu pilih simpan.</p>', [
+        {label:'Tutup', cls:'light'},
+        {label:'Simpan Foto', fn:function(){ savePhoto(blob, name); }}
+      ]);
+    }, 'image/jpeg', 0.92);
+  }
+  function savePhoto(blob, name){
+    getDownloads().then(function(dl){
+      if (dl){
+        dl.save({filename:name, data:blob}).then(function(){ toast('Foto disimpan.'); }).catch(function(err){
+          var code = err && err.code;
+          if (code === 'declined') toast('Penyimpanan dibatalkan.');
+          else if (code === 'rate_limited') toast('Tunggu sebentar, lalu coba simpan lagi.');
+          else toast('Foto tidak bisa disimpan di sini.');
+        });
+      } else {
+        try {
+          var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+          document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 4000);
+          toast('Foto diunduh.');
+        } catch(e){ toast('Foto tidak bisa diunduh di perangkat ini.'); }
+      }
+    });
+  }
+  $('#tShot').addEventListener('click', takePhoto);
+
+  /* ---------- masuk / keluar ---------- */
+  function enter(opts){
+    if (glOk === null) glOk = initGL();
+    mission = !!opts.mission;
+    document.body.classList.toggle('mission', mission);
+    $('#missionBar').hidden = !mission;
+    $('#coach').hidden = true;
+    if (!glOk){
+      $('#nTitle').textContent = 'Tampilan 3D tidak didukung';
+      $('#nMsg').textContent = 'Perangkat atau browser ini belum mendukung WebGL, sehingga objek 3D tidak bisa ditampilkan. Coba buka dengan Google Chrome versi terbaru.';
+      $('#nTip').textContent = ''; $('#notice').hidden = false;
+    }
+    loadScene(mission ? 'tatasurya' : (opts.scene || scene));
+    if (mission) Mission.start();
+    running = true; last = performance.now(); lastSize = '';
+    requestAnimationFrame(frame);
+    if (bgMode === 'photo' && photo.naturalWidth) setBg('photo');
+    else if (S.camPref) startCam();
+    else setBg('3d');
+  }
+  function leave(){ running = false; stopCam(); if (bgMode === 'camera') bgMode = '3d'; closeInfo(); $('#notice').hidden = true; document.body.classList.remove('mission', 'bg-camera', 'bg-photo'); }
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden && running && bgMode === 'camera'){ stopCam(); bgMode = 'resume'; }
+    else if (!document.hidden && running && bgMode === 'resume'){ bgMode = '3d'; startCam(); }
+  });
+
+  try { if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ lastSize = ''; }); } catch(e){}
+
+  return {enter:enter, leave:leave, renderStrip:renderStrip, showLabel:function(id){ reveal = {id:id, until:T + 3}; hi = {node:id, t0:T}; },
+          isMission:function(){ return mission; }, _pick:pick, _state:function(){ return {scene:scene, bgMode:bgMode, glOk:glOk, D:D, vw:vw, W:W, H:H}; },
+          _project:function(id){ var w = lastWorld[id]; return w ? project(w.c) : null; }, _load:loadScene};
+})();
+
+/* =====================================================================
+   MISI AR
+   ===================================================================== */
+var Mission = {
+  i:0, tries:0, earned:[], locked:false,
+  start: function(){ this.i = 0; this.tries = 0; this.earned = []; this.locked = false; this.render(); },
+  render: function(){
+    var m = MISSIONS[this.i];
+    $('#mNum').textContent = 'Misi ' + (this.i + 1) + ' dari ' + MISSIONS.length;
+    $('#mStars').innerHTML = starsHtml(0, 3, 'mstars').replace(/^<div class="mstars">|<\/div>$/g, '');
+    $('#mQ').textContent = m.q;
+    $('#mFb').textContent = ''; $('#mFb').className = 'mfb';
+    $('#mHint').hidden = true; $('#mHint').textContent = m.hint;
+    $('#mNext').hidden = true;
+    $('#mNext').textContent = this.i === MISSIONS.length - 1 ? 'Lihat Hasil' : 'Misi Berikutnya';
+  },
+  check: function(part){
+    if (this.locked) return;
+    var m = MISSIONS[this.i], d = PARTS[part];
+    if (part === m.a){
+      var st = this.tries === 0 ? 3 : this.tries === 1 ? 2 : 1;
+      this.earned[this.i] = st; S.stars[this.i] = Math.max(S.stars[this.i] || 0, st); save();
+      this.locked = true; Sfx.ok();
+      $('#mFb').className = 'mfb ok';
+      $('#mFb').textContent = 'Hebat! Itu ' + d.nama + '. ' + d.fakta[0];
+      $('#mStars').innerHTML = starsHtml(st, 3, 'mstars').replace(/^<div class="mstars">|<\/div>$/g, '');
+      $('#mHint').hidden = true; $('#mNext').hidden = false;
+      AR.showLabel(part);
+    } else {
+      this.tries++; Sfx.bad();
+      $('#mFb').className = 'mfb bad';
+      $('#mFb').textContent = 'Bukan, itu ' + (d ? d.nama : 'benda lain') + '. Coba lagi!';
+      if (this.tries >= 2) $('#mHint').hidden = false;
+    }
+  },
+  next: function(){
+    Speech.stop();
+    this.i++; this.tries = 0; this.locked = false;
+    if (this.i >= MISSIONS.length) return this.finish();
+    this.render();
+  },
+  finish: function(){
+    var tot = this.earned.reduce(function(a, b){ return a + (b || 0); }, 0), max = MISSIONS.length * 3;
+    var n = tot >= 13 ? 3 : tot >= 9 ? 2 : 1;
+    modal('Misi selesai!', starsHtml(n, 3) + '<p>Kamu mengumpulkan <b>' + tot + ' dari ' + max + '</b> bintang.</p>', [
+      {label:'Ulangi Misi', cls:'light', fn:function(){ Mission.start(); }},
+      {label:'Ke Menu', fn:function(){ go('menu'); }}
+    ]);
+  }
+};
+$('#mNext').addEventListener('click', function(){ Mission.next(); });
+$('#mSpeak').addEventListener('click', function(){ Speech.speak(MISSIONS[Mission.i].q, this); });
+
+/* =====================================================================
+   KUIS
+   ===================================================================== */
+var Quiz = {
+  qs:[], i:0, ans:[],
+  start: function(){
+    this.qs = QUIZ.map(function(q){ return {q:q.q, e:q.e, opts:shuffle(q.o.map(function(t, k){ return {t:t, ok:k === q.a}; }))}; });
+    this.i = 0; this.ans = this.qs.map(function(){ return null; });
+    $('#qMain').hidden = false; $('#qResult').hidden = true;
+    this.render();
+  },
+  render: function(){
+    var q = this.qs[this.i], self = this, L = 'ABCD';
+    $('#qNum').textContent = 'Soal ' + (this.i + 1) + ' dari ' + this.qs.length;
+    $('#qBar').style.width = ((this.i + 1) / this.qs.length * 100) + '%';
+    $('#qText').textContent = q.q;
+    $('#qOpts').innerHTML = q.opts.map(function(o, k){ return '<button class="opt' + (self.ans[self.i] === k ? ' sel' : '') + '" data-k="' + k + '"><b>' + L[k] + '</b><span>' + esc(o.t) + '</span></button>'; }).join('');
+    $('#qPrev').style.visibility = this.i === 0 ? 'hidden' : 'visible';
+    $('#qNext').textContent = this.i === this.qs.length - 1 ? 'Kumpulkan' : 'Berikutnya';
+  },
+  select: function(k){ this.ans[this.i] = k; Sfx.tap(); this.render(); },
+  next: function(){
+    Speech.stop();
+    if (this.ans[this.i] == null){ toast('Pilih salah satu jawaban dulu.'); return; }
+    if (this.i < this.qs.length - 1){ this.i++; this.render(); $('#s-quiz').scrollTop = 0; }
+    else {
+      var kosong = this.ans.filter(function(a){ return a == null; }).length;
+      if (kosong){ toast('Masih ada ' + kosong + ' soal yang belum dijawab.'); return; }
+      this.finish();
+    }
+  },
+  prev: function(){ Speech.stop(); if (this.i > 0){ this.i--; this.render(); } },
+  finish: function(){
+    var self = this, benar = 0, L = 'ABCD';
+    this.qs.forEach(function(q, i){ if (q.opts[self.ans[i]].ok) benar++; });
+    var nilai = benar * 10;
+    S.quiz = {benar:benar, nilai:nilai, best:Math.max(nilai, (S.quiz && S.quiz.best) || 0), tgl:Date.now()}; save();
+    $('#qMain').hidden = true; $('#qResult').hidden = false;
+    $('#qScore').textContent = nilai;
+    $('#qScoreRing').style.setProperty('--p', nilai + '%');
+    $('#qMsg').textContent = nilai >= 80 ? 'Luar biasa!' : nilai >= 60 ? 'Bagus, terus belajar!' : 'Ayo, coba lagi!';
+    $('#qSub').textContent = 'Kamu menjawab benar ' + benar + ' dari ' + this.qs.length + ' soal.' + (nilai < 60 ? ' Jelajahi lagi objek AR-nya, lalu ulangi kuis.' : '');
+    $('#qRev').innerHTML = this.qs.map(function(q, i){
+      var pick = q.opts[self.ans[i]], right = q.opts.filter(function(o){ return o.ok; })[0], ok = pick.ok;
+      return '<li class="' + (ok ? '' : 'no') + '"><div class="q">' + (i + 1) + '. ' + esc(q.q) + '</div>' +
+        '<div class="a">' + (ok ? '✓ ' : '✗ ') + 'Jawabanmu: <b>' + L[self.ans[i]] + '. ' + esc(pick.t) + '</b>' + (ok ? '' : ' · Jawaban benar: <b>' + L[q.opts.indexOf(right)] + '. ' + esc(right.t) + '</b>') + '</div>' +
+        '<div class="e">' + esc(q.e) + '</div></li>';
+    }).join('');
+    if (nilai >= 80) Sfx.ok();
+    $('#s-quiz').scrollTop = 0;
+  }
+};
+$('#qOpts').addEventListener('click', function(e){ var b = e.target.closest('.opt'); if (b) Quiz.select(+b.dataset.k); });
+$('#qNext').addEventListener('click', function(){ Quiz.next(); });
+$('#qPrev').addEventListener('click', function(){ Quiz.prev(); });
+$('#qRetry').addEventListener('click', function(){ Quiz.start(); $('#s-quiz').scrollTop = 0; });
+$('#qSpeak').addEventListener('click', function(){
+  var q = Quiz.qs[Quiz.i], L = 'ABCD';
+  Speech.speak(q.q.replace(/\.\.\.\.$/, '') + '. ' + q.opts.map(function(o, k){ return 'Pilihan ' + L[k] + ', ' + o.t + '.'; }).join(' '), this);
+});
+
+/* =====================================================================
+   REFLEKSI & SELESAI
+   ===================================================================== */
+function renderRefl(){
+  $('#rQ1').textContent = '1. ' + REFL[0]; $('#rQ2').textContent = '2. ' + REFL[1];
+  $('#rNama').value = S.refl.nama || ''; $('#rA1').value = S.refl.a1 || ''; $('#rA2').value = S.refl.a2 || '';
+}
+['rNama','rA1','rA2'].forEach(function(id){
+  $('#' + id).addEventListener('input', function(){ S.refl.nama = $('#rNama').value; S.refl.a1 = $('#rA1').value; S.refl.a2 = $('#rA2').value; save(); });
+});
+$$('[data-speak]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); Speech.speak(REFL[+b.dataset.speak - 1], b); }); });
+$('#rDone').addEventListener('click', function(){
+  if ((S.refl.a1 || '').trim().length < 3 || (S.refl.a2 || '').trim().length < 3){ toast('Isi kedua jawaban refleksi dulu, ya.'); return; }
+  Sfx.ok(); go('done');
+});
+function renderDone(){
+  var nama = (S.refl.nama || '').trim();
+  $('#dTitle').textContent = nama ? ('Hebat, ' + nama + '! Kamu sudah selesai.') : 'Hebat, kamu sudah selesai!';
+  $('#dSum').innerHTML =
+    '<div><b>' + learnedCount() + '/' + OBJECTS.length + '</b>objek dipelajari</div>' +
+    '<div><b>★ ' + starSum() + '/' + (MISSIONS.length * 3) + '</b>bintang misi</div>' +
+    '<div><b>' + (S.quiz ? S.quiz.nilai : '–') + '</b>nilai kuis</div>' +
+    '<div><b>' + new Date().toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) + '</b>tanggal</div>';
+  $('#dAns').innerHTML = '<h4>' + esc(REFL[0]) + '</h4><p>' + esc(S.refl.a1 || '-') + '</p><h4>' + esc(REFL[1]) + '</h4><p>' + esc(S.refl.a2 || '-') + '</p>';
+}
+function resetAll(){
+  modal('Mulai ulang?', 'Semua kemajuan di perangkat ini (objek, bintang, nilai kuis, dan refleksi) akan dihapus. Gunakan ini saat perangkat dipakai murid lain.', [
+    {label:'Batal', cls:'light'},
+    {label:'Ya, mulai ulang', cls:'violet', fn:function(){ S.learned = []; S.stars = [0,0,0,0,0]; S.quiz = null; S.refl = {nama:'', a1:'', a2:''}; save(); AR.renderStrip(); go('home'); toast('Kemajuan sudah dihapus.'); }}
+  ]);
+}
+$('#btnReset').addEventListener('click', resetAll);
+$('#dReset').addEventListener('click', resetAll);
+
+/* =====================================================================
+   PENGHUBUNG TOMBOL
+   ===================================================================== */
+document.addEventListener('click', function(e){ var b = e.target.closest('[data-go]'); if (b){ Sfx.tap(); go(b.dataset.go); } });
+$('#btnBack').addEventListener('click', function(){ Sfx.tap(); back(); });
+$('#btnSound').addEventListener('click', function(){ S.sound = !S.sound; save(); renderSoundBtn(); if (!S.sound) Speech.stop(); else Sfx.tap(); toast(S.sound ? 'Suara dinyalakan.' : 'Suara dimatikan.'); });
+$('#tileAR').addEventListener('click', function(){ Sfx.tap(); go('ar', {mission:false}); });
+$('#tileMisi').addEventListener('click', function(){ Sfx.tap(); go('ar', {mission:true}); });
+$('#tileKuis').addEventListener('click', function(){
+  if (learnedCount() < OBJECTS.length){ Sfx.bad(); toast('Kuis terbuka setelah 8 objek dipelajari (' + learnedCount() + '/8). Ketuk objek di Jelajah AR.'); return; }
+  Sfx.tap(); go('quiz');
+});
+$('#tileRefl').addEventListener('click', function(){
+  if (!S.quiz){ Sfx.bad(); toast('Refleksi terbuka setelah kamu mengerjakan kuis.'); return; }
+  Sfx.tap(); go('refl');
+});
+$('#guideSpeak').addEventListener('click', function(){
+  Speech.speak('Cara memakai MPI AR. Satu, izinkan kamera saat diminta, lalu objek 3D akan muncul di ruanganmu. Dua, geser satu jari untuk memutar objek. Tiga, cubit dua jari untuk memperbesar atau memperkecil, dan geser dua jari untuk memindahkan. Empat, ketuk objek atau bagiannya untuk membaca faktanya, lalu tekan Dengarkan agar dibacakan.', this);
+});
+$('#tpSpeak').addEventListener('click', function(){ Speech.speak('Tujuan pembelajaran. Murid dapat: ' + TP.map(function(t, i){ return (i + 1) + ', ' + t; }).join(' '), this); });
+$('#modal').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
+
+/* mulai */
+renderTP(); renderSoundBtn(); decorateSpeak(); Speech.init();
+document.body.dataset.screen = 'home';
+window.__MPI = {AR:AR, go:go, S:S, Quiz:Quiz, Mission:Mission};
+})();
+</script>
+</body>
+</html>
